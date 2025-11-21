@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Kreta_WPF
 {
@@ -43,6 +46,49 @@ namespace Kreta_WPF
             return elements;
         }
 
+        private void revertBorder(object sender, RoutedEventArgs e)
+        {
+            Control? myControl = sender as Control;
+            if (myControl != null) myControl.BorderBrush = Brushes.Gray;
+        }
+
+        private void submitLogin(object sender, RoutedEventArgs e)
+        {
+            Action<string, Control?> writeError = (string errorText, Control? elementToChange) =>
+            {
+                errorBlock.Text = errorText;
+                if (elementToChange != null) elementToChange.BorderBrush = Brushes.Red;
+                throw new ArgumentNullException(errorText);
+            };
+
+            try
+            {
+                string username = loginUsername.Text;
+                string password = loginPassword.Password;
+
+                if (string.IsNullOrEmpty(username)) writeError("A felhasználó név megadása kötelező a bejelentkezéshez!", loginUsername);
+                if (string.IsNullOrEmpty(password)) writeError("A jelszó megadása kötelező a bejelentkezéshez!", loginPassword);
+
+                bool loggedIn = tryLogin(username, password);
+                if (loggedIn)
+                {
+                    loginPage.Visibility = Visibility.Collapsed;
+                    activePage.Visibility = Visibility.Visible;
+                }
+                else writeError("A megadott felhasználónév/jelszó párral nem található felhasználó a rendszerben.", null);
+            }
+            catch (ArgumentNullException) { }
+        }
+
+        private bool secondOnlyLogin = false;
+        private bool tryLogin(string us, string ps)
+        {
+            // TODO ADD LOGIN FUNCTIONALITY
+            bool returnVal = secondOnlyLogin;
+            secondOnlyLogin = !secondOnlyLogin;
+            return returnVal;
+        }
+
         private void menuButtonClick(object sender, RoutedEventArgs e)
         {
             if (sender is null) return;
@@ -55,8 +101,14 @@ namespace Kreta_WPF
             if (Frames is null || activeName is null) return;
             foreach(FrameworkElement f in Frames)
             {
-                f.Visibility = Equals(f.Name, activeName) ? Visibility.Visible : Visibility.Hidden;
+                f.Visibility = Equals(f.Name, activeName) ? Visibility.Visible : Visibility.Collapsed;
             }
+        }
+
+        private void emptyLabel(object sender, RoutedEventArgs e)
+        {
+            TextBlock? myObject = sender as TextBlock;
+            if(myObject is TextBlock) myObject.Text = "";
         }
     }
 }
