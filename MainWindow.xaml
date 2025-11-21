@@ -15,39 +15,39 @@
         <ContentControl Grid.Row="0">
             <UniformGrid Columns="6">
                 <Image></Image>
-                <Button Content="Órarend" Tag="ttFrame"/>
-                <Button Content="Osztályzatok" Tag="grFrame"/>
-                <Button Content="Mulasztások" Tag="miFrame"/>
-                <Button Content="Információk" Tag="inFrame"/>
-                <Button Content="Házi feladatok" Tag="hwFrame"/>
+                <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick"/>
+                <Button Content="Osztályzatok" Tag="grFrame" Click="menuButtonClick"/>
+                <Button Content="Mulasztások" Tag="miFrame" Click="menuButtonClick"/>
+                <Button Content="Információk" Tag="inFrame" Click="menuButtonClick"/>
+                <Button Content="Házi feladatok" Tag="hwFrame" Click="menuButtonClick"/>
             </UniformGrid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="ttFrame" Tag="ContentFrame">
+        <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame">
             <Grid>
                 <Label Content="Ez az órarend felülete!" />
             </Grid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="grFrame" Tag="ContentFrame" Visibility="Hidden">
+        <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Hidden">
             <Grid>
                 <Label Content="Ez az osztályzatok felülete!" />
             </Grid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="miFrame" Tag="ContentFrame" Visibility="Hidden">
+        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Hidden">
             <Grid>
                 <Label Content="Ez a mulasztások felülete!" />
             </Grid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="inFrame" Tag="ContentFrame" Visibility="Hidden">
+        <ContentControl Grid.Row="1" Name="inFrame" Tag="contentFrame" Visibility="Hidden">
             <Grid>
                 <Label Content="Ez az információ felülete!" />
             </Grid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="hwFrame" Tag="ContentFrame" Visibility="Hidden">
+        <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Hidden">
             <Grid>
                 <Label Content="Ez az házi feladat felülete!" />
             </Grid>
