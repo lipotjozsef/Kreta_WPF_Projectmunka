@@ -5,26 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kreta_WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-        <Grid>
-            <ContentControl Name="loginPage" MaxWidth="1000px">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Image></Image>
-                    <StackPanel VerticalAlignment="Center" Width="auto" Height="auto" Grid.Column="1">
-                        <TextBox Name="loginUsername" Margin="0, 5" LostFocus="revertBorder"/>
-                        <PasswordBox Name="loginPassword" Margin="0, 5" LostFocus="revertBorder"/>
-                        <StackPanel HorizontalAlignment="Right" Width="auto">
-                            <Button Content="Bejelentkezés" Width="100px" Margin="0, 5" Click="submitLogin"/>
+        Title="Ceruza" Height="450" Width="800"
+        FontSize="15px"
+        FontFamily="Arial">
+    <Window.Resources>
+        <Style x:Key="h1Label" TargetType="Control">
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <ContentControl Name="loginPage" MaxWidth="1000px">
+            <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image></Image>
+                        <StackPanel VerticalAlignment="Center" Width="auto" Height="auto" Grid.Column="1">
+                            <TextBox Name="loginUsername" Margin="0, 5" LostFocus="revertBorder"/>
+                            <PasswordBox Name="loginPassword" Margin="0, 5" LostFocus="revertBorder"/>
+                            <StackPanel HorizontalAlignment="Right" Width="auto">
+                                <Button Content="Bejelentkezés" Width="100px" Margin="0, 5" Click="submitLogin"/>
+                            </StackPanel>
+                        <TextBlock Name="errorBlock" Text="Teszt Error!" TextAlignment="Center"  Margin="0, 10" TextWrapping="Wrap" MaxWidth="300" Foreground="Red" Loaded="emptyLabel"/>
                         </StackPanel>
-                    <TextBlock Name="errorBlock" Text="Teszt Error!" TextAlignment="Center"  Margin="0, 10" TextWrapping="Wrap" MaxWidth="300" Foreground="Red" Loaded="emptyLabel"/>
-                    </StackPanel>
-                </Grid>
-            </ContentControl>
+                    </Grid>
+        </ContentControl>
+        
         <ContentControl Name="activePage" Visibility="Collapsed">
             <Grid>
                 <Grid.RowDefinitions>
@@ -35,18 +44,52 @@
                 <ContentControl Grid.Row="0">
                     <UniformGrid Columns="6">
                         <Image></Image>
-                        <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick"/>
-                        <Button Content="Osztályzatok" Tag="grFrame" Click="menuButtonClick"/>
-                        <Button Content="Mulasztások" Tag="miFrame" Click="menuButtonClick"/>
-                        <Button Content="Információk" Tag="inFrame" Click="menuButtonClick"/>
-                        <Button Content="Házi feladatok" Tag="hwFrame" Click="menuButtonClick"/>
+                        <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
+                        <Button Content="Osztályzatok" Tag="grFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
+                        <Button Content="Mulasztások" Tag="miFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
+                        <Button Content="Információk" Tag="inFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
+                        <Button Content="Házi feladatok" Tag="hwFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                     </UniformGrid>
                 </ContentControl>
 
                 <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame">
-                    <Grid>
-                        <Label Content="Ez az órarend felülete!" />
-                    </Grid>
+                    <Border BorderBrush="Black" BorderThickness="0.5" Margin="10">
+                        <Grid Tag="10_6" Name="ttTable"  Initialized="generateRowsColumnsByTag">
+                            <Grid.Resources>
+                                <Style x:Key="baseLabel" TargetType="Label">
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="FontSize" Value="13"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+                                    <Setter Property="BorderThickness" Value="0.5" />
+                                </Style>
+                                <Style x:Key="headerLabel" TargetType="Label" BasedOn="{StaticResource baseLabel}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="20"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Label Content="" Grid.Column="0" Grid.Row="0" Style="{StaticResource headerLabel}"/>
+                            <Label Content="Hetfő" Grid.Column="1" Grid.Row="0" Style="{StaticResource headerLabel}"/>
+                            <Label Content="Kedd" Grid.Column="2" Grid.Row="0" Style="{StaticResource headerLabel}"/>
+                            <Label Content="Szerda" Grid.Column="3" Grid.Row="0" Style="{StaticResource headerLabel}"/>
+                            <Label Content="Csütörtök" Grid.Column="4" Grid.Row="0" Style="{StaticResource headerLabel}"/>
+                            <Label Content="Péntek" Grid.Column="5" Grid.Row="0" Style="{StaticResource headerLabel}"/>
+
+                            <Label Content="0. óra" Grid.Column="0" Grid.Row="1" Style="{StaticResource headerLabel}"/>
+                            <Label Content="1. óra" Grid.Column="0" Grid.Row="2" Style="{StaticResource headerLabel}"/>
+                            <Label Content="2. óra" Grid.Column="0" Grid.Row="3" Style="{StaticResource headerLabel}"/>
+                            <Label Content="3. óra" Grid.Column="0" Grid.Row="4" Style="{StaticResource headerLabel}"/>
+                            <Label Content="4. óra" Grid.Column="0" Grid.Row="5" Style="{StaticResource headerLabel}"/>
+                            <Label Content="5. óra" Grid.Column="0" Grid.Row="6" Style="{StaticResource headerLabel}"/>
+                            <Label Content="6. óra" Grid.Column="0" Grid.Row="7" Style="{StaticResource headerLabel}"/>
+                            <Label Content="7. óra" Grid.Column="0" Grid.Row="8" Style="{StaticResource headerLabel}"/>
+                            <Label Content="8. óra" Grid.Column="0" Grid.Row="9" Style="{StaticResource headerLabel}"/>
+                            <UniformGrid Name="ttClassesGrid" Rows="9" Columns="5" Grid.Column="1" Grid.ColumnSpan="8" Grid.Row="1" Grid.RowSpan="9" IsVisibleChanged="loadTimeTable">
+                            
+                            </UniformGrid>
+                        </Grid>
+                    </Border>
                 </ContentControl>
 
                 <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
