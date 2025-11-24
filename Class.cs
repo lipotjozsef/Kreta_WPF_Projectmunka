@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Kreta_WPF
 {
     internal class Class
     {
-        public Class(Dictionary<Subject, Teacher> SubjectsAndTeachers, List<Student> Students)
+        [JsonConstructor]
+        public Class(string ClassDesignation, Dictionary<string, Teacher> SubjectsAndTeachers, List<Student> Students)
         {
+            this.ClassDesignation = ClassDesignation;
             this.SubjectsAndTeachers = SubjectsAndTeachers;
+            Subjects = []; Teachers = [];
 
             foreach (var item in SubjectsAndTeachers)
             {
@@ -21,9 +20,11 @@ namespace Kreta_WPF
 
             this.Students = Students;
         }
-        public Dictionary<Subject, Teacher> SubjectsAndTeachers { get; set; }
-        public List<Subject> Subjects { get; set; } = [];
-        public List<Teacher> Teachers { get; set; } = [];
+
+        public string ClassDesignation { get; set; }
+        public Dictionary<string, Teacher> SubjectsAndTeachers { get; set; }
+        public List<string> Subjects { get; set; }
+        public List<Teacher> Teachers { get; set; }
         public List<Student> Students { get; set; }
     }
 }
