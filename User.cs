@@ -16,5 +16,10 @@ namespace Kreta_WPF
         {
             return ID == (obj as User)?.ID;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
