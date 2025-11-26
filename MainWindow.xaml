@@ -15,7 +15,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <ContentControl Name="loginPage" MaxWidth="1000px">
+        <ContentControl Name="loginPage" MaxWidth="1000px" Visibility="Collapsed">
             <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -34,7 +34,7 @@
                     </Grid>
         </ContentControl>
         
-        <ContentControl Name="activePage" Visibility="Collapsed">
+        <ContentControl Name="activePage" Visibility="Visible">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.15*" />
@@ -42,17 +42,16 @@
                 </Grid.RowDefinitions>
 
                 <ContentControl Grid.Row="0">
-                    <UniformGrid Columns="6">
+                    <UniformGrid Columns="5">
                         <Image></Image>
                         <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                         <Button Content="Osztályzatok" Tag="grFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                         <Button Content="Mulasztások" Tag="miFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
-                        <Button Content="Információk" Tag="inFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                         <Button Content="Házi feladatok" Tag="hwFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                     </UniformGrid>
                 </ContentControl>
 
-                <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame">
+                <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame" Visibility="Collapsed">
                     <Border BorderBrush="Black" BorderThickness="0.5" Margin="10">
                         <Grid Tag="10_6" Name="ttTable"  Initialized="generateRowsColumnsByTag">
                             <Grid.Resources>
@@ -93,26 +92,103 @@
                 </ContentControl>
 
                 <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
-                    <Grid>
-                        <Label Content="Ez az osztályzatok felülete!" />
-                    </Grid>
+                    <Border Margin="10" BorderBrush="Black" BorderThickness="0.5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <UniformGrid Columns="16" Rows="1" Grid.Row="0">
+                                <Label Content="#" />
+                                <Label Content="Tantárgy" />
+                                <Label Content="09" />
+                                <Label Content="10"/>
+                                <Label Content="11"/>
+                                <Label Content="12"/>
+                                <Label Content="01/I"/>
+                                <Label Content="I"/>
+                                <Label Content="01/II"/>
+                                <Label Content="02"/>
+                                <Label Content="03"/>
+                                <Label Content="04"/>
+                                <Label Content="05"/>
+                                <Label Content="06"/>
+                                <Label Content="II"/>
+                                <Label Content="Átlag"/>
+                            </UniformGrid>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                                <StackPanel Name="gradeGrid" Orientation="Vertical" IsVisibleChanged="loadGrades">
+                                    <UniformGrid Columns="16" Rows="1">
+                                        <Label Content="1" />
+                                        <Label Content="Magyar" />
+                                        <Label Content="0" />
+                                        <Label Content="5 5 5" />
+                                    </UniformGrid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
                 </ContentControl>
 
                 <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Collapsed">
                     <Grid>
-                        <Label Content="Ez a mulasztások felülete!" />
+                        <StackPanel Margin="20 0" IsVisibleChanged="loadAbsences">
+                            <StackPanel.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="Gray"/>
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="CornerRadius" Value="10" />
+                                    <Setter Property="Margin" Value="0 10" />
+                                </Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Padding" Value="20 10"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
+                                <UniformGrid Columns="2" Rows="1">
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Label Content="November 7." />
+                                        <Label Content="Péntek" />
+                                    </StackPanel>
+                                    <Label HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Igazolatlan: 5" Background="Gray" Foreground="WhiteSmoke"/>
+                                </UniformGrid>
+                            </Border>
+                        </StackPanel>
                     </Grid>
                 </ContentControl>
 
-                <ContentControl Grid.Row="1" Name="inFrame" Tag="contentFrame" Visibility="Collapsed">
-                    <Grid>
-                        <Label Content="Ez az információ felülete!" />
-                    </Grid>
-                </ContentControl>
-
-                <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Collapsed">
-                    <Grid>
-                        <Label Content="Ez az házi feladat felülete!" />
+                <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Visible">
+                    <Grid Margin="10 20">
+                        <ScrollViewer>
+                            <StackPanel IsVisibleChanged="loadHomework">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="Gray"/>
+                                        <Setter Property="BorderThickness" Value="1" />
+                                        <Setter Property="CornerRadius" Value="10" />
+                                        <Setter Property="Margin" Value="0 10" />
+                                    </Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Padding" Value="20 10"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Tag" Value="whiteLabel">
+                                                <Setter Property="Foreground" Value="WhiteSmoke"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Border>
+                                    <UniformGrid Rows="1" Columns="2">
+                                        <StackPanel Background="Gray">
+                                            <Label Content="2025. 11. 26" Tag="whiteLabel"/>
+                                            <Label Content="Matematika" Tag="whiteLabel"/>
+                                        </StackPanel>
+                                        <Label Content="Feladatgyűjtemény: 4320, 4255"/>
+                                    </UniformGrid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Grid>
                 </ContentControl>
             </Grid>
