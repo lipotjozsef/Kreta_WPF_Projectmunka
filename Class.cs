@@ -5,7 +5,7 @@ namespace Kreta_WPF
     internal class Class
     {
         [JsonConstructor]
-        public Class(string ClassDesignation, Dictionary<string, Teacher> SubjectsAndTeachers, List<Student> Students)
+        public Class(string ClassDesignation, Dictionary<string, int> SubjectsAndTeachers, List<int> Students)
         {
             this.ClassDesignation = ClassDesignation;
             this.SubjectsAndTeachers = SubjectsAndTeachers;
@@ -22,9 +22,9 @@ namespace Kreta_WPF
         }
 
         public string ClassDesignation { get; set; }
-        public Dictionary<string, Teacher> SubjectsAndTeachers { get; set; }
+        public Dictionary<string, int> SubjectsAndTeachers { get; set; }
         public List<string> Subjects { get; set; }
-        public List<Teacher> Teachers { get; set; }
-        public List<Student> Students { get; set; }
+        public List<int> Teachers { get; set; }
+        public List<int> Students { get; set; }
     }
 }

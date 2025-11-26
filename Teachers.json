@@ -1,0 +1,102 @@
+﻿[
+  {
+    "ID": 1000,
+    "Name": "Sarah Jenkins",
+    "Password": "P@sswOrd123"
+  },
+  {
+    "ID": 1001,
+    "Name": "David Chen",
+    "Password": "MyS3cr3tKey!"
+  },
+  {
+    "ID": 1002,
+    "Name": "Emily Rodriguez",
+    "Password": "Project_A_2025"
+  },
+  {
+    "ID": 1003,
+    "Name": "Michael O'Connell",
+    "Password": "TestUserPass#"
+  },
+  {
+    "ID": 1004,
+    "Name": "Jessica Lee",
+    "Password": "DataDemo$1"
+  },
+  {
+    "ID": 1005,
+    "Name": "Robert Martinez",
+    "Password": "R0bbyM_2000"
+  },
+  {
+    "ID": 1006,
+    "Name": "Maria Garcia",
+    "Password": "M_Garc1a_X"
+  },
+  {
+    "ID": 1007,
+    "Name": "James Wilson",
+    "Password": "WilsOn!1990"
+  },
+  {
+    "ID": 1008,
+    "Name": "Linda Brown",
+    "Password": "L1nd@Br0wn"
+  },
+  {
+    "ID": 1009,
+    "Name": "William Miller",
+    "Password": "Wm.M1ll3r"
+  },
+  {
+    "ID": 1010,
+    "Name": "Elizabeth Davis",
+    "Password": "El!z@b3thD"
+  },
+  {
+    "ID": 1011,
+    "Name": "Richard Jones",
+    "Password": "R1chJ0n3s!"
+  },
+  {
+    "ID": 1012,
+    "Name": "Patricia Moore",
+    "Password": "P_M00r3_Key"
+  },
+  {
+    "ID": 1013,
+    "Name": "Joseph Taylor",
+    "Password": "J0s3phT@y"
+  },
+  {
+    "ID": 1014,
+    "Name": "Barbara Anderson",
+    "Password": "B.Anderson#"
+  },
+  {
+    "ID": 1015,
+    "Name": "Thomas Jackson",
+    "Password": "T_J@ck_S0n"
+  },
+  {
+    "ID": 1016,
+    "Name": "Jennifer White",
+    "Password": "J3nn1W_P@ss"
+  },
+  {
+    "ID": 1017,
+    "Name": "Charles Harris",
+    "Password": "Ch@rl!3H"
+  },
+  {
+    "ID": 1018,
+    "Name": "Susan Martin",
+    "Password": "S_M@rt1n_!"
+  },
+  {
+    "ID": 1019,
+    "Name": "Christopher Thompson",
+    "Password": "Chr1sT_2024"
+  }
+]

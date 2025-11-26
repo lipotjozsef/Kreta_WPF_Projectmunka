@@ -8,8 +8,13 @@ namespace Kreta_WPF
 {
     internal class User(int ID, string Name, string Password)
     {
-        public int ID { get; set; } = ID;
+        private int ID { get; set; } = ID;
         public string Name { get; set; } = Name;
-        public string Password { get; set; } = Password;
+        private string Password { get; set; } = Password;
+
+        public override bool Equals(object? obj)
+        {
+            return ID == (obj as User)?.ID;
+        }
     }
 }
