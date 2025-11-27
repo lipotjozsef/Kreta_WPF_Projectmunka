@@ -14,10 +14,10 @@ namespace Kreta_WPF
             return this.ID == ID && this.Password == Password;
         }
 
-        public static List<User> ReadUsers(string FilePath)
+        public static List<T> ReadUsers<T>(string FilePath)
         {
             var JSONString = File.ReadAllText(FilePath);
-            var Users = JsonConvert.DeserializeObject<List<User>>(JSONString);
+            var Users = JsonConvert.DeserializeObject<List<T>>(JSONString);
             return Users!;
         }
 
