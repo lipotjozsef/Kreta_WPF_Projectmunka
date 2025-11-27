@@ -9,9 +9,9 @@ namespace Kreta_WPF
         public string Name { get; set; } = Name;
         private string Password { get; set; } = Password;
 
-        public bool Login(string Password)
+        public bool Login(int ID, string Password)
         {
-            return this.Password == Password;
+            return this.ID == ID && this.Password == Password;
         }
 
         public static List<User> ReadUsers(string FilePath)
