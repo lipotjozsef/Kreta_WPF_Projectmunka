@@ -23,7 +23,7 @@ namespace Kreta_WPF.Pages
     {
         public IEnumerable<FrameworkElement>? Frames = null;
         // Temp Only!
-        List<Subject>? possibleSubjects = null;
+        string[]? possibleSubjects = null;
         Random myRandom = new Random();
 
         private Student? loggedinUser = null;
@@ -31,7 +31,7 @@ namespace Kreta_WPF.Pages
         public StudentPage(Student? loggedinUser)
         {
             this.loggedinUser = loggedinUser;
-            possibleSubjects = loggedinUser.Subjects;
+            possibleSubjects = loggedinUser?.Subjects.Select(x => x.Name).ToArray();
             InitializeComponent();
             Frames = MainWindow.getElementsByTag(this, "contentFrame");
         }
@@ -55,27 +55,31 @@ namespace Kreta_WPF.Pages
         private void loadTimeTable(object sender, DependencyPropertyChangedEventArgs e)
         {
             UniformGrid? timeTable = sender as UniformGrid;
-            if (timeTable is null) return;
+            if (timeTable is null || possibleSubjects is null) return;
 
-            /*if (Equals(e.NewValue, true))
+            if (Equals(e.NewValue, true))
             {
-                for (int i = 0; i != 9; i++)
+                for (int i = 0; i != 5; i++)
                 {
-                    for (int j = 0; j != 5; j++)
+                    int randomClassCount = myRandom.Next(possibleSubjects.Length, 7);
+                    for (int j = 0; j != randomClassCount; j++)
                     {
-                        Label newClassLabel = new Label
-                        {
-                            HorizontalContentAlignment = HorizontalAlignment.Center,
-                            VerticalContentAlignment = VerticalAlignment.Center,
-                            Style = (Style)ttTable.Resources["baseLabel"],
-                            Background = i % 2 == 0 ? Brushes.WhiteSmoke : Brushes.White,
-                            Content = possibleSubjects[myRandom.Next(possibleSubjects.Count)]
-                        };
+                        string currentContent = "";
+                        if (15 < myRandom.Next(0, 100)) currentContent = possibleSubjects[myRandom.Next(possibleSubjects.Length)];
+                        else j--;
+                            Label newClassLabel = new Label
+                            {
+                                HorizontalContentAlignment = HorizontalAlignment.Center,
+                                VerticalContentAlignment = VerticalAlignment.Center,
+                                Style = (Style)ttTable.Resources["baseLabel"],
+                                Background = j % 2 == 0 ? Brushes.WhiteSmoke : Brushes.White,
+                                Content = currentContent
+                            };
                         timeTable.Children.Add(newClassLabel);
                     }
                 }
             }
-            else timeTable.Children.Clear();*/
+            else timeTable.Children.Clear();
         }
 
         private void loadGrades(object sender, DependencyPropertyChangedEventArgs e)
@@ -85,11 +89,9 @@ namespace Kreta_WPF.Pages
 
             if (Equals(e.NewValue, true))
             {
-                int i = 0;
-                foreach(Subject mySub in possibleSubjects) {
-                    UniformGrid generatedGradeCard = generateGradeCard(i, mySub.Name);
+                for (int i = 0; i != possibleSubjects.Length; i++) {
+                    UniformGrid generatedGradeCard = generateGradeCard(i, possibleSubjects[i]);
                     gradePanel.Children.Add(generatedGradeCard);
-                    i++;
                 }
             }
             else gradePanel.Children.Clear();
