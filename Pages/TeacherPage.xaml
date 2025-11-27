@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Kreta_WPF.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="320" d:DesignWidth="800"
       Title="TeacherPage">
 
     <Page.Resources>
@@ -31,7 +31,7 @@
             </UniformGrid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame" Visibility="Visible">
+        <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame" Visibility="Collapsed">
             <Border BorderBrush="Black" BorderThickness="0.5" Margin="10">
                 <Grid Tag="10_6" Name="ttTable"  Initialized="generateRowsColumnsByTag">
                     <Grid.Resources>
@@ -110,8 +110,43 @@
             </Border>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Collapsed">
+        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Visible">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Content="Új Mulasztás Rögzítése" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <StackPanel Grid.Row="1" Grid.RowSpan="4" Grid.Column="1">
+                    <Label Content="Osztály" />
+                    <ComboBox Name="cbClasses" SelectionChanged="loadStudents" IsVisibleChanged="loadClasses">
+
+                    </ComboBox>
+                    <Label Content="Tanuló" />
+                    <ComboBox Name="cbStudents">
+
+                    </ComboBox>
+                    <Label Content="Dátum" />
+                    <DatePicker Name="absDp" />
+                    <Label Content="Késés" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Name="minutesLate" Width="25" IsReadOnly="True">5</TextBox>
+                        <StackPanel Width="25">
+                            <Button Height="10" FontSize="5" Tag="5" Click="changeMinutesLate">▲</Button>
+                            <Button Height="10" FontSize="5" Tag="-5" Click="changeMinutesLate">▼</Button>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Margin="0 20" Width="80" HorizontalAlignment="Right" Click="tryNewAbsence">Rögzítés</Button>
+                    <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Name="lMessage" Grid.Row="4" Grid.Column="1" />
+                </StackPanel>
             </Grid>
         </ContentControl>
 
