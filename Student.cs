@@ -11,8 +11,19 @@
 
         public void AddSubjects(List<string> Subjects)
         {
-            foreach (var subject in Subjects.Where(subject => !Subjects.Contains(subject)))
+            var strings = new List<string>();
+            foreach (var item in this.Subjects)
+            {
+                strings.Add(item.Name);
+            }
+
+            foreach (var subject in Subjects.Where(subject => !strings.Contains(subject)))
                 this.Subjects.Add(new Subject(subject));
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return this.Name == (obj as Student).Name;
         }
     }
 }
