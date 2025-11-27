@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace Kreta_WPF
 {
@@ -26,5 +27,12 @@ namespace Kreta_WPF
         public List<string> Subjects { get; set; }
         public List<int> Teachers { get; set; }
         public List<int> Students { get; set; }
+
+        static public List<Class> ReadClasses(string FilePath)
+        {
+            var JSONString = File.ReadAllText(FilePath);
+            var Classes = JsonConvert.DeserializeObject<List<Class>>(JSONString);
+            return Classes!;
+        }
     }
 }
