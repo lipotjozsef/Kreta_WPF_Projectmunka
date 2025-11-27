@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Kreta_WPF
 {
-    internal class User(int ID, string Name, string Password)
+    public class User(int ID, string Name, string Password)
     {
-        private int ID { get; set; } = ID;
+        public int ID { get; } = ID;
         public string Name { get; set; } = Name;
         private string Password { get; set; } = Password;
 
@@ -14,7 +14,7 @@ namespace Kreta_WPF
             return this.Password == Password;
         }
 
-        static public List<User> ReadUsers(string FilePath)
+        public static List<User> ReadUsers(string FilePath)
         {
             var JSONString = File.ReadAllText(FilePath);
             var Users = JsonConvert.DeserializeObject<List<User>>(JSONString);

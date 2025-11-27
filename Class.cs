@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Kreta_WPF
 {
-    internal class Class
+    public class Class
     {
         [JsonConstructor]
         public Class(string ClassDesignation, Dictionary<string, int> SubjectsAndTeachers, List<int> Students)
@@ -28,11 +28,17 @@ namespace Kreta_WPF
         public List<int> Teachers { get; set; }
         public List<int> Students { get; set; }
 
-        static public List<Class> ReadClasses(string FilePath)
+        public static List<Class> ReadClasses(string FilePath)
         {
             var JSONString = File.ReadAllText(FilePath);
             var Classes = JsonConvert.DeserializeObject<List<Class>>(JSONString);
             return Classes!;
+        }
+
+        public void LoadSubjects(List<Student> Students)
+        {
+            foreach (var student in Students.Where(student => this.Students.Contains(student.ID)))
+                student.AddSubjects(Subjects);
         }
     }
 }

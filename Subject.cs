@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kreta_WPF
 {
-    internal class Subject(string Name)
+    public class Subject(string Name)
     {
         public string Name { get; set; } = Name;
         public List<int> Marks { get; set; } = [];

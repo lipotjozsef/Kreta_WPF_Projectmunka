@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kreta_WPF
 {
-    internal class Teacher(int ID, string Name, string Password) : User(ID, Name, Password)
+    public class Teacher(int ID, string Name, string Password) : User(ID, Name, Password)
     {
     }
 }
