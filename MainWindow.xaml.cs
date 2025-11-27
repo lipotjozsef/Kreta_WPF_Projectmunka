@@ -15,11 +15,11 @@ namespace Kreta_WPF
         static string studentPath = "./JSONData/Students.json";
         static string teacherPath = "./JSONData/Teachers.json";
         static string classesPath = "./JSONData/Classes.json";
-        static List<Student> students = User.ReadUsers<Student>(studentPath);
-        static List<Teacher> teachers = User.ReadUsers<Teacher>(teacherPath);
-        static List<Class> classes = Class.ReadClasses(classesPath);
+        public static List<Student> students = User.ReadUsers<Student>(studentPath);
+        public static List<Teacher> teachers = User.ReadUsers<Teacher>(teacherPath);
+        public static List<Class> classes = Class.ReadClasses(classesPath);
 
-        Student? loggedinUser = null;
+        User? loggedinUser = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -77,11 +77,10 @@ namespace Kreta_WPF
                     loginPage.Visibility = Visibility.Collapsed;
                     activePage.Visibility = Visibility.Visible;
                     Page? newMainPage = null;
-                    /*if (loggedinUser is Teacher) newMainPage = new TeacherPage(loggedinUser as Teacher);
+                    if (loggedinUser is Teacher) newMainPage = new TeacherPage(loggedinUser as Teacher);
                     else if(loggedinUser is Student) newMainPage = new StudentPage(loggedinUser as Student);
 
-                    MainFrame.Navigate(newMainPage);*/
-                    MainFrame.Navigate(new StudentPage(loggedinUser));
+                    MainFrame.Navigate(newMainPage);
                 }
                 else writeError("A megadott felhasználónév/jelszó párral nem található felhasználó a rendszerben.", null);
             }
@@ -98,15 +97,13 @@ namespace Kreta_WPF
                 }
             }
 
-            /*List<Teacher> teachers = User.ReadUsers<Teacher>(teacherPath);
-
-            foreach (User user in teachers) {
+            foreach (Teacher user in teachers) {
                 if (user.Login(id, ps))
                 {
                     loggedinUser = user;
                     return true;
                 }
-            }*/
+            }
             return false;
         }
 
