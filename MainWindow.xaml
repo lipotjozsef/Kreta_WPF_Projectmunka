@@ -8,14 +8,8 @@
         Title="Ceruza" Height="450" Width="800"
         FontSize="15px"
         FontFamily="Arial">
-    <Window.Resources>
-        <Style x:Key="h1Label" TargetType="Control">
-            <Setter Property="FontSize" Value="25"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-    </Window.Resources>
     <Grid>
-        <ContentControl Name="loginPage" MaxWidth="1000px" Visibility="Collapsed">
+        <ContentControl Name="loginPage" MaxWidth="1000px" Visibility="Visible">
             <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -24,7 +18,7 @@
                         </Grid.ColumnDefinitions>
                         <Image></Image>
                         <StackPanel VerticalAlignment="Center" Width="auto" Height="auto" Grid.Column="1">
-                            <TextBox Name="loginUsername" Margin="0, 5" LostFocus="revertBorder"/>
+                            <TextBox Name="loginUserID" Margin="0, 5" LostFocus="revertBorder"/>
                             <PasswordBox Name="loginPassword" Margin="0, 5" LostFocus="revertBorder"/>
                             <StackPanel HorizontalAlignment="Right" Width="auto">
                                 <Button Content="Bejelentkezés" Width="100px" Margin="0, 5" Click="submitLogin"/>
@@ -34,164 +28,8 @@
                     </Grid>
         </ContentControl>
         
-        <ContentControl Name="activePage" Visibility="Visible">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.15*" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <ContentControl Grid.Row="0">
-                    <UniformGrid Columns="5">
-                        <Image></Image>
-                        <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
-                        <Button Content="Osztályzatok" Tag="grFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
-                        <Button Content="Mulasztások" Tag="miFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
-                        <Button Content="Házi feladatok" Tag="hwFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
-                    </UniformGrid>
-                </ContentControl>
-
-                <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame" Visibility="Collapsed">
-                    <Border BorderBrush="Black" BorderThickness="0.5" Margin="10">
-                        <Grid Tag="10_6" Name="ttTable"  Initialized="generateRowsColumnsByTag">
-                            <Grid.Resources>
-                                <Style x:Key="baseLabel" TargetType="Label">
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                    <Setter Property="FontSize" Value="13"/>
-                                    <Setter Property="BorderBrush" Value="Black"/>
-                                    <Setter Property="BorderThickness" Value="0.5" />
-                                </Style>
-                                <Style x:Key="headerLabel" TargetType="Label" BasedOn="{StaticResource baseLabel}">
-                                    <Setter Property="Background" Value="AliceBlue"/>
-                                    <Setter Property="FontWeight" Value="Bold" />
-                                    <Setter Property="FontSize" Value="20"/>
-                                </Style>
-                            </Grid.Resources>
-                            <Label Content="" Grid.Column="0" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                            <Label Content="Hetfő" Grid.Column="1" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                            <Label Content="Kedd" Grid.Column="2" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                            <Label Content="Szerda" Grid.Column="3" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                            <Label Content="Csütörtök" Grid.Column="4" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                            <Label Content="Péntek" Grid.Column="5" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-
-                            <Label Content="0. óra" Grid.Column="0" Grid.Row="1" Style="{StaticResource headerLabel}"/>
-                            <Label Content="1. óra" Grid.Column="0" Grid.Row="2" Style="{StaticResource headerLabel}"/>
-                            <Label Content="2. óra" Grid.Column="0" Grid.Row="3" Style="{StaticResource headerLabel}"/>
-                            <Label Content="3. óra" Grid.Column="0" Grid.Row="4" Style="{StaticResource headerLabel}"/>
-                            <Label Content="4. óra" Grid.Column="0" Grid.Row="5" Style="{StaticResource headerLabel}"/>
-                            <Label Content="5. óra" Grid.Column="0" Grid.Row="6" Style="{StaticResource headerLabel}"/>
-                            <Label Content="6. óra" Grid.Column="0" Grid.Row="7" Style="{StaticResource headerLabel}"/>
-                            <Label Content="7. óra" Grid.Column="0" Grid.Row="8" Style="{StaticResource headerLabel}"/>
-                            <Label Content="8. óra" Grid.Column="0" Grid.Row="9" Style="{StaticResource headerLabel}"/>
-                            <UniformGrid Name="ttClassesGrid" Rows="9" Columns="5" Grid.Column="1" Grid.ColumnSpan="8" Grid.Row="1" Grid.RowSpan="9" IsVisibleChanged="loadTimeTable">
-                            
-                            </UniformGrid>
-                        </Grid>
-                    </Border>
-                </ContentControl>
-
-                <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
-                    <Border Margin="10" BorderBrush="Black" BorderThickness="0.5">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <UniformGrid Columns="16" Rows="1" Grid.Row="0">
-                                <Label Content="#" />
-                                <Label Content="Tantárgy" />
-                                <Label Content="09" />
-                                <Label Content="10"/>
-                                <Label Content="11"/>
-                                <Label Content="12"/>
-                                <Label Content="01/I"/>
-                                <Label Content="I"/>
-                                <Label Content="01/II"/>
-                                <Label Content="02"/>
-                                <Label Content="03"/>
-                                <Label Content="04"/>
-                                <Label Content="05"/>
-                                <Label Content="06"/>
-                                <Label Content="II"/>
-                                <Label Content="Átlag"/>
-                            </UniformGrid>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                                <StackPanel Name="gradeGrid" Orientation="Vertical" IsVisibleChanged="loadGrades">
-                                    <UniformGrid Columns="16" Rows="1">
-                                        <Label Content="1" />
-                                        <Label Content="Magyar" />
-                                        <Label Content="0" />
-                                        <Label Content="5 5 5" />
-                                    </UniformGrid>
-                                </StackPanel>
-                            </ScrollViewer>
-                        </Grid>
-                    </Border>
-                </ContentControl>
-
-                <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Collapsed">
-                    <Grid>
-                        <StackPanel Margin="20 0" IsVisibleChanged="loadAbsences">
-                            <StackPanel.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="Gray"/>
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="CornerRadius" Value="10" />
-                                    <Setter Property="Margin" Value="0 10" />
-                                </Style>
-                                <Style TargetType="Label">
-                                    <Setter Property="Padding" Value="20 10"/>
-                                </Style>
-                            </StackPanel.Resources>
-
-                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
-                                <UniformGrid Columns="2" Rows="1">
-                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Label Content="November 7." />
-                                        <Label Content="Péntek" />
-                                    </StackPanel>
-                                    <Label HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Igazolatlan: 5" Background="Gray" Foreground="WhiteSmoke"/>
-                                </UniformGrid>
-                            </Border>
-                        </StackPanel>
-                    </Grid>
-                </ContentControl>
-
-                <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Visible">
-                    <Grid Margin="10 20">
-                        <ScrollViewer>
-                            <StackPanel IsVisibleChanged="loadHomework">
-                                <StackPanel.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="Gray"/>
-                                        <Setter Property="BorderThickness" Value="1" />
-                                        <Setter Property="CornerRadius" Value="10" />
-                                        <Setter Property="Margin" Value="0 10" />
-                                    </Style>
-                                    <Style TargetType="Label">
-                                        <Setter Property="Padding" Value="20 10"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="Tag" Value="whiteLabel">
-                                                <Setter Property="Foreground" Value="WhiteSmoke"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </StackPanel.Resources>
-                                <Border>
-                                    <UniformGrid Rows="1" Columns="2">
-                                        <StackPanel Background="Gray">
-                                            <Label Content="2025. 11. 26" Tag="whiteLabel"/>
-                                            <Label Content="Matematika" Tag="whiteLabel"/>
-                                        </StackPanel>
-                                        <Label Content="Feladatgyűjtemény: 4320, 4255"/>
-                                    </UniformGrid>
-                                </Border>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Grid>
-                </ContentControl>
-            </Grid>
+        <ContentControl Name="activePage" Visibility="Collapsed">
+            <Frame Name="MainFrame" />
         </ContentControl>
     </Grid>
 </Window>
