@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Kreta_WPF
 {
@@ -13,13 +14,14 @@ namespace Kreta_WPF
     public partial class MainWindow : Window
     {
         static string studentPath = "./JSONData/Students.json";
-        static string teacherPath = "./JSONData/Teachers.json";
-        static string classesPath = "./JSONData/Classes.json";
         public static List<Student> students = User.ReadUsers<Student>(studentPath);
+
+        static string teacherPath = "./JSONData/Teachers.json";
         public static List<Teacher> teachers = User.ReadUsers<Teacher>(teacherPath);
+
+        static string classesPath = "./JSONData/Classes.json";
         public static List<Class> classes = Class.ReadClasses(classesPath);
 
-        User? loggedinUser = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -47,10 +49,28 @@ namespace Kreta_WPF
             return elements;
         }
 
+        public static void DelayAction(int millisecond, Action action)
+        {
+            var timer = new DispatcherTimer();
+            timer.Tick += delegate
+
+            {
+                action.Invoke();
+                timer.Stop();
+            };
+
+            timer.Interval = TimeSpan.FromMilliseconds(millisecond);
+            timer.Start();
+        }
+
         private void revertBorder(object sender, RoutedEventArgs e)
         {
             Control? myControl = sender as Control;
             if (myControl != null) myControl.BorderBrush = Brushes.Gray;
+        }
+        private void loginPanelKeydown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter) submitLogin(sender, e);
         }
 
         private void submitLogin(object sender, RoutedEventArgs e)
@@ -65,14 +85,14 @@ namespace Kreta_WPF
             try
             {
                 int userid = -1;
-                int.TryParse(loginUserID.Text, out userid);
-                string password = loginPassword.Password;
+                int.TryParse(loginUserID.Text.Trim(), out userid);
+                string password = loginPassword.Password.Trim();
 
                 if (userid == -1) writeError("A felhasználó név megadása kötelező a bejelentkezéshez!", loginUserID);
                 if (string.IsNullOrEmpty(password)) writeError("A jelszó megadása kötelező a bejelentkezéshez!", loginPassword);
 
-                bool loggedIn = tryLogin(userid, password);
-                if (loggedIn)
+                User? loggedinUser = tryLogin(userid, password);
+                if (!Equals(loggedinUser, null))
                 {
                     loginPage.Visibility = Visibility.Collapsed;
                     activePage.Visibility = Visibility.Visible;
@@ -87,24 +107,17 @@ namespace Kreta_WPF
             catch (ArgumentNullException) { }
         }
 
-        private bool tryLogin(int id, string ps)
+        private User? tryLogin(int id, string ps)
         {
-            foreach (Student user in students) {
-                if (user.Login(id, ps))
-                {
-                    loggedinUser = user;
-                    return true;
-                }
+            foreach (Student stu in students) {
+                if (stu.Login(id, ps)) return stu;
             }
 
-            foreach (Teacher user in teachers) {
-                if (user.Login(id, ps))
-                {
-                    loggedinUser = user;
-                    return true;
-                }
+            foreach (Teacher teach in teachers) {
+                if (teach.Login(id, ps)) return teach;
             }
-            return false;
+
+            return null;
         }
 
         private void emptyLabel(object sender, RoutedEventArgs e)
