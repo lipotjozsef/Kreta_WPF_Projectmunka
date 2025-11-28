@@ -97,12 +97,14 @@
                     </UniformGrid>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                         <StackPanel Name="gradeGrid" Orientation="Vertical" IsVisibleChanged="loadGrades">
+                            <!--  /** Template Card **/
                             <UniformGrid Columns="16" Rows="1">
                                 <Label Content="1" />
                                 <Label Content="Magyar" />
                                 <Label Content="0" />
                                 <Label Content="5 5 5" />
                             </UniformGrid>
+                            -->
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
@@ -123,7 +125,8 @@
                             <Setter Property="Padding" Value="20 10"/>
                         </Style>
                     </StackPanel.Resources>
-
+                    
+                    <!--  /** Template Card **/
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
                         <UniformGrid Columns="2" Rows="1">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -133,6 +136,7 @@
                             <Label HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Igazolatlan: 5" Background="Gray" Foreground="WhiteSmoke"/>
                         </UniformGrid>
                     </Border>
+                    -->
                 </StackPanel>
             </Grid>
         </ContentControl>
@@ -157,6 +161,8 @@
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Resources>
+                        
+                        <!-- /** Template Card  **/
                         <Border>
                             <UniformGrid Rows="1" Columns="2">
                                 <StackPanel Background="Gray">
@@ -166,6 +172,7 @@
                                 <Label Content="Feladatgyűjtemény: 4320, 4255"/>
                             </UniformGrid>
                         </Border>
+                        -->
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
