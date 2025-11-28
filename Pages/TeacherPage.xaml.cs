@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -10,10 +12,11 @@ namespace Kreta_WPF.Pages
     /// </summary>
     public partial class TeacherPage : Page
     {
-        Teacher? loggedInUser;
+        private readonly Teacher loggedInUser;
         public IEnumerable<FrameworkElement>? Frames = null;
-        string[]? classDesignations = null;
-        public TeacherPage(Teacher? loggedInUser)
+        string[] classDesignations = [];
+
+        public TeacherPage(Teacher loggedInUser)
         {
             this.loggedInUser = loggedInUser;
             classDesignations = MainWindow.classes.Where(x => x.Teachers.Contains(loggedInUser.ID)).Select(x => x.ClassDesignation).ToArray();
@@ -53,7 +56,8 @@ namespace Kreta_WPF.Pages
                 if (currentStudent is null) continue;
                 ComboBoxItem newName = new ComboBoxItem
                 {
-                    Content = currentStudent.Name
+                    Content = currentStudent.Name,
+                    Tag = currentStudent.ID.ToString()
                 };
                 cbStudents.Items.Add(newName);
             }
@@ -83,7 +87,28 @@ namespace Kreta_WPF.Pages
 
         private void tryNewAbsence(object sender, RoutedEventArgs e)
         {
-            lMessage.Content = "Mulasztás sikeresen rögzítve!";
+            Button? senderButton = (Button)sender;
+            if (senderButton is null || !senderButton.IsEnabled) return;
+
+            senderButton.IsEnabled = false;
+
+            string classDes = cbClasses.Text.Trim();
+            int studentID = -1;
+            int.TryParse((cbStudents.SelectedItem as ComboBoxItem)?.Tag.ToString(), out studentID);
+            int late = -1;
+            int.TryParse(minutesLate.Text.ToString(), out late);
+            DateTime lateDate = (DateTime)absDp.SelectedDate;
+
+            bool setNewAbs = newAbsence(classDes, studentID, late, lateDate);
+            if(setNewAbs) lMessage.Content = "A mulasztás sikeresen rögzítve!";
+            else lMessage.Content = "A mulasztás rögzítése félre ment!";
+
+            MainWindow.DelayAction(1500, new Action(() => { senderButton.IsEnabled = true; }));
+        }
+
+        private bool newAbsence(string classDes, int stuID, int minutes, DateTime dpDate)
+        {
+            return true;
         }
 
         private void changeMinutes(int amount)
@@ -112,6 +137,11 @@ namespace Kreta_WPF.Pages
                 generateGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
             for (int j = 0; j != colNum; j++)
                 generateGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        }
+
+        private void tryNewHomework(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

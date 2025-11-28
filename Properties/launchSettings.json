@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Kreta_WPF": {
+      "commandName": "Project",
+      "hotReloadEnabled": true
+    }
+  }
+}
