@@ -72,45 +72,48 @@
         </ContentControl>
 
         <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
-            <Border Margin="10" BorderBrush="Black" BorderThickness="0.5">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <UniformGrid Columns="16" Rows="1" Grid.Row="0">
-                        <Label Content="#" />
-                        <Label Content="Tantárgy" />
-                        <Label Content="09" />
-                        <Label Content="10"/>
-                        <Label Content="11"/>
-                        <Label Content="12"/>
-                        <Label Content="01/I"/>
-                        <Label Content="I"/>
-                        <Label Content="01/II"/>
-                        <Label Content="02"/>
-                        <Label Content="03"/>
-                        <Label Content="04"/>
-                        <Label Content="05"/>
-                        <Label Content="06"/>
-                        <Label Content="II"/>
-                        <Label Content="Átlag"/>
-                    </UniformGrid>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                        <StackPanel Name="gradeGrid" Orientation="Vertical">
-                            <UniformGrid Columns="16" Rows="1">
-                                <Label Content="1" />
-                                <Label Content="Magyar" />
-                                <Label Content="0" />
-                                <Label Content="5 5 5" />
-                            </UniformGrid>
+            <Grid Margin="10">
+                <Grid.Resources>
+                    <Style x:Key="gradeButton" TargetType="RadioButton">
+                        <Setter Property="Margin" Value="5, 0"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition />
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label Content="Új érdemjegy rögzítése" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5"/>
+                <StackPanel Grid.Row="1" Width="400">
+                    <Label Content="Dolgozat leírás" />
+                    <TextBox Height="50" TextWrapping="Wrap"/>
+                </StackPanel>
+                <Border Margin="10, 5" BorderBrush="Black" BorderThickness="0.5" Grid.Row="2">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <StackPanel Name="gradeGrid" Orientation="Vertical" Margin="20">
+                                <UniformGrid Columns="3">
+                                    <Label Content="1" />
+                                    <Label Content="Neve" />
+                                    <StackPanel Orientation="Horizontal" Margin="0, 5" VerticalAlignment="Center">
+                                        <RadioButton Content="1" Style="{StaticResource gradeButton}" />
+                                        <RadioButton Content="2" Style="{StaticResource gradeButton}" />
+                                        <RadioButton Content="3" Style="{StaticResource gradeButton}" />
+                                        <RadioButton Content="4" Style="{StaticResource gradeButton}" />
+                                        <RadioButton Content="5" Style="{StaticResource gradeButton}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
-                </Grid>
-            </Border>
+                </Border>
+                <Button Grid.Row="3" Width="80" Margin="10, 5" HorizontalAlignment="Right">Rögzítés</Button>
+            </Grid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Visible">
+        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Collapsed">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -152,7 +155,26 @@
 
         <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Collapsed">
             <Grid Margin="10 20">
-                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Content="Új feladat rögzítése" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <StackPanel Grid.Row="1" Grid.RowSpan="4" Grid.Column="1">
+                    <Label Content="Osztály" />
+                    <ComboBox Name="hwClassCB" IsVisibleChanged="loadClasses" />
+                    <Label Content="Feladat leírás" />
+                    <TextBox TextWrapping="Wrap" Height="100"/>
+                    <Button HorizontalAlignment="Right" Padding="20, 0" Margin="10, 20" Click="tryNewHomework">Rözgzítés</Button>
+                </StackPanel>
             </Grid>
         </ContentControl>
     </Grid>
