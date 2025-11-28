@@ -22,16 +22,15 @@ namespace Kreta_WPF.Pages
     public partial class StudentPage : Page
     {
         public IEnumerable<FrameworkElement>? Frames = null;
-        // Temp Only!
-        string[]? possibleSubjects = null;
+        string[] possibleSubjects = [];
         Random myRandom = new Random();
 
-        private Student? loggedinUser = null;
+        private readonly Student loggedinUser;
 
-        public StudentPage(Student? loggedinUser)
+        public StudentPage(Student loggedinUser)
         {
             this.loggedinUser = loggedinUser;
-            possibleSubjects = loggedinUser?.Subjects.Select(x => x.Name).ToArray();
+            possibleSubjects = loggedinUser.Subjects.Select(x => x.Name).ToArray();
             InitializeComponent();
             Frames = MainWindow.getElementsByTag(this, "contentFrame");
         }
@@ -169,9 +168,6 @@ namespace Kreta_WPF.Pages
 
         private Border generateNewCard(string[] contents, bool isFlipped = false)
         {
-            Brush bgBrush = isFlipped ? Brushes.White : Brushes.Gray;
-            Brush fgBrush = isFlipped ? Brushes.Black : Brushes.WhiteSmoke;
-
             Border parentBorder = new Border();
             UniformGrid parentGrid = new UniformGrid()
             {
@@ -181,18 +177,22 @@ namespace Kreta_WPF.Pages
             parentBorder.Child = parentGrid;
             StackPanel stackParent = new StackPanel
             {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Background = isFlipped ? Brushes.White : Brushes.Gray
+                Background = isFlipped ? Brushes.Gray : Brushes.White
             };
             parentGrid.Children.Add(stackParent);
             Label title = new Label()
             {
-                Content = contents[0]
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Content = contents[0],
+                Foreground = isFlipped ? Brushes.WhiteSmoke : Brushes.Black
             };
             Label title2 = new Label()
             {
-                Content = contents[1]
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Content = contents[1],
+                Foreground = isFlipped ? Brushes.WhiteSmoke : Brushes.Black
             };
             stackParent.Children.Add(title);
             stackParent.Children.Add(title2);
