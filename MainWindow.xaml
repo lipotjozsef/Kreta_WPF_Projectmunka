@@ -11,21 +11,23 @@
     <Grid>
         <ContentControl Name="loginPage" MaxWidth="1000px" Visibility="Visible">
             <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Image></Image>
-                        <StackPanel VerticalAlignment="Center" Width="auto" Height="auto" Grid.Column="1">
-                            <TextBox Name="loginUserID" Margin="0, 5" LostFocus="revertBorder"/>
-                            <PasswordBox Name="loginPassword" Margin="0, 5" LostFocus="revertBorder"/>
-                            <StackPanel HorizontalAlignment="Right" Width="auto">
-                                <Button Content="Bejelentkezés" Width="100px" Margin="0, 5" Click="submitLogin"/>
-                            </StackPanel>
-                        <TextBlock Name="errorBlock" Text="Teszt Error!" TextAlignment="Center"  Margin="0, 10" TextWrapping="Wrap" MaxWidth="300" Foreground="Red" Loaded="emptyLabel"/>
-                        </StackPanel>
-                    </Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image></Image>
+                <StackPanel VerticalAlignment="Center" Width="auto" Height="auto" Grid.Column="1" KeyDown="loginPanelKeydown">
+                    <Label Content="Azonosító" />
+                    <TextBox Name="loginUserID" LostFocus="revertBorder"/>
+                    <Label Content="Jelszó" Margin="0, 5, 0, 0"/>
+                    <PasswordBox Name="loginPassword" LostFocus="revertBorder"/>
+                    <StackPanel HorizontalAlignment="Right" Width="auto">
+                        <Button Content="Bejelentkezés" Width="100px" Margin="0, 10" Click="submitLogin"/>
+                    </StackPanel>
+                    <TextBlock Name="errorBlock" Text="Teszt Error!" TextAlignment="Center"  Margin="0, 10" TextWrapping="Wrap" MaxWidth="300" Foreground="Red" Loaded="emptyLabel"/>
+                </StackPanel>
+            </Grid>
         </ContentControl>
         
         <ContentControl Name="activePage" Visibility="Collapsed">
