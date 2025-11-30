@@ -72,29 +72,33 @@
         </ContentControl>
 
         <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
+            <ContentControl.Resources>
+                <Style x:Key="gradeButton" TargetType="RadioButton">
+                    <Setter Property="Margin" Value="5, 0"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </ContentControl.Resources>
             <Grid Margin="10">
-                <Grid.Resources>
-                    <Style x:Key="gradeButton" TargetType="RadioButton">
-                        <Setter Property="Margin" Value="5, 0"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
-                    </Style>
-                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="100"/>
                     <RowDefinition />
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <Label Content="Új érdemjegy rögzítése" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5"/>
-                <StackPanel Grid.Row="1" Width="400">
+                <ComboBox Name="grClassCB" Width="400" Grid.Row="1" IsVisibleChanged="loadClasses" SelectionChanged="loadStudentsGrade"  />
+                <StackPanel Grid.Row="2" Width="400">
                     <Label Content="Dolgozat leírás" />
                     <TextBox Height="50" TextWrapping="Wrap"/>
                 </StackPanel>
-                <Border Margin="10, 5" BorderBrush="Black" BorderThickness="0.5" Grid.Row="2">
+                <Border Margin="10, 5" BorderBrush="Black" BorderThickness="0.5" Grid.Row="3">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
-                            <StackPanel Name="gradeGrid" Orientation="Vertical" Margin="20">
-                                <UniformGrid Columns="3">
+                            <StackPanel Name="gradeGrid" Orientation="Vertical" Margin="10, 5">
+                                <!-- ** Template Card **
+                                <UniformGrid Columns="4">
+                                    <CheckBox />
                                     <Label Content="1" />
                                     <Label Content="Neve" />
                                     <StackPanel Orientation="Horizontal" Margin="0, 5" VerticalAlignment="Center">
@@ -105,11 +109,12 @@
                                         <RadioButton Content="5" Style="{StaticResource gradeButton}" />
                                     </StackPanel>
                                 </UniformGrid>
+                                -->
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
-                <Button Grid.Row="3" Width="80" Margin="10, 5" HorizontalAlignment="Right">Rögzítés</Button>
+                <Button Grid.Row="4" Width="80" Margin="10, 5" HorizontalAlignment="Right" Click="newGrading">Rögzítés</Button>
             </Grid>
         </ContentControl>
 
