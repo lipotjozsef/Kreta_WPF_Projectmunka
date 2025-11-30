@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace Kreta_WPF.Pages
 {
@@ -15,7 +16,7 @@ namespace Kreta_WPF.Pages
         private readonly Teacher loggedInUser;
         public IEnumerable<FrameworkElement>? Frames = null;
         string[] classDesignations = [];
-
+        Dictionary<int, int> grading = new();
         public TeacherPage(Teacher loggedInUser)
         {
             this.loggedInUser = loggedInUser;
@@ -40,6 +41,21 @@ namespace Kreta_WPF.Pages
             }
         }
 
+        private Student[] selectedStudents(string? selectedDes)
+        {
+            if (selectedDes is null) return [];
+            List<Student> selected = new();
+
+            Class? selectedClass = MainWindow.classes.Where(x => x.ClassDesignation == selectedDes).ToArray()[0];
+            if (selectedClass is null) return [];
+            foreach (int stuId in selectedClass.Students)
+            {
+                Student? currentStudent = MainWindow.students.Where(stu => stu.ID.Equals(stuId)).ToArray()[0];
+                selected.Add(currentStudent);
+            }
+            return selected.ToArray();
+        }
+
         private void loadStudents(object sender, RoutedEventArgs e)
         {
             cbStudents.Items.Clear();
@@ -48,7 +64,18 @@ namespace Kreta_WPF.Pages
             string? selectedDes = typeItem.Content.ToString();
             if(string.IsNullOrEmpty(selectedDes)) return;
 
-            Class? selectedClass = MainWindow.classes.Where(x => x.ClassDesignation == selectedDes).ToArray()[0];
+            Student[] myStudents = selectedStudents(selectedDes);
+            foreach (Student student in myStudents) {
+                if (student is null) continue;
+                ComboBoxItem newName = new ComboBoxItem
+                {
+                    Content = student.Name,
+                    Tag = student.ID.ToString()
+                };
+                cbStudents.Items.Add(newName);
+            }
+
+            /*Class? selectedClass = MainWindow.classes.Where(x => x.ClassDesignation == selectedDes).ToArray()[0];
             if (selectedClass is null) return;
             foreach(int stuId in selectedClass.Students)
             {
@@ -60,7 +87,7 @@ namespace Kreta_WPF.Pages
                     Tag = currentStudent.ID.ToString()
                 };
                 cbStudents.Items.Add(newName);
-            }
+            }*/
             cbStudents.SelectedIndex = 0;
         }
 
@@ -137,6 +164,87 @@ namespace Kreta_WPF.Pages
                 generateGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
             for (int j = 0; j != colNum; j++)
                 generateGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+        }
+
+        private void loadStudentsGrade(object sender, RoutedEventArgs e)
+        {
+            ComboBox? senderPanel = sender as ComboBox;
+            if (senderPanel?.SelectedItem is null) return;
+            ComboBoxItem? typeItem = (ComboBoxItem)grClassCB.SelectedItem;
+            if (typeItem is null) return;
+            string? selectedDes = typeItem.Content.ToString();
+            if (string.IsNullOrEmpty(selectedDes)) return;
+
+            gradeGrid.Children.Clear();
+            grading.Clear();
+            Student[] myStudents = selectedStudents(selectedDes);
+
+            for(int stuIndex = 0; stuIndex != myStudents.Length; stuIndex++)
+            {
+                UniformGrid newStudentGrid = newStudentGrids(stuIndex+1, myStudents[stuIndex]);
+                gradeGrid.Children.Add(newStudentGrid);
+            }
+        }
+
+        private void appendNewGrade(Student myStudent, RadioButton selectedGrade)
+        {
+
+            int grade = -1;
+            int.TryParse(selectedGrade.Content.ToString(), out grade);
+            if (grade == -1) return;
+            grading[myStudent.ID] = grade;
+        }
+
+        private UniformGrid newStudentGrids(int index, Student student)
+        {
+            UniformGrid newGrid = new UniformGrid
+            {
+                Columns = 4
+            };
+
+            CheckBox newCheck = new() {
+                IsChecked = true
+            };
+            newGrid.Children.Add(newCheck);
+
+            Label indexLabel = new Label
+            {
+                Content = index.ToString()
+            };
+            newGrid.Children.Add(indexLabel);
+
+            Label nameLabel = new Label
+            {
+                Content = student.Name
+            };
+            newGrid.Children.Add(nameLabel);
+
+            StackPanel newPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            newGrid.Children.Add(newPanel);
+            
+            for (int j = 0; j != 5; j++)
+            {
+                RadioButton newButton = new RadioButton { Content = (j+1).ToString(), Style = (Style)grFrame.Resources["gradeButton"] };
+                newButton.Click += (sender, e) =>
+                {
+                    if(Equals(newCheck.IsChecked, true))
+                    {
+                        appendNewGrade(student, newButton);
+                    }
+                };
+                newPanel.Children.Add(newButton);
+                if (j == 0) newButton.IsChecked = true;
+            }
+            return newGrid;
+        }
+
+        private void newGrading(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void tryNewHomework(object sender, RoutedEventArgs e)
