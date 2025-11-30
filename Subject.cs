@@ -15,5 +15,13 @@ namespace Kreta_WPF
         {
             return Marks.Average();
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (obj is not Subject other) return false;
+            
+            return Name == other.Name;
+        }
     }
 }

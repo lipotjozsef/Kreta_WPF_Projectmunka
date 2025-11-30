@@ -1,7 +1,10 @@
-﻿namespace Kreta_WPF
+﻿using Newtonsoft.Json;
+
+namespace Kreta_WPF
 {
     public class Student(int ID, string Name, string Password) : User(ID, Name, Password)
     {
+        [JsonProperty(Order=1)]
         public List<Subject> Subjects { get; set; } = [];
 
         public double AverageMark()
@@ -23,7 +26,10 @@
 
         public override bool Equals(object? obj)
         {
-            return this.Name == (obj as Student).Name;
+            if (obj == null) return false;
+            if (obj is not Student other) return false;
+            
+            return ID == other.ID;
         }
     }
 }
