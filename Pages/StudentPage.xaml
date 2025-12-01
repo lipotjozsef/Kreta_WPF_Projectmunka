@@ -9,10 +9,21 @@
       Title="StudentPage">
     <Page.Resources>
         <Style x:Key="h1Label" TargetType="Control">
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Background" Value="#BAD7E9" />
+            <Setter Property="Foreground" Value="#2B3467"/>
+            <Setter Property="BorderBrush" Value="#2B3467"/>
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
-    </Page.Resources>
+        <Style x:Key="submitButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderBrush" Value="Green" />
+            <Setter Property="Background" Value="#14baa0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="10, 5" />
+        </Style>
+        </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,9 +31,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Row="0">
-            <UniformGrid Columns="5">
-                <Image></Image>
+        <ContentControl Grid.Row="0" VerticalAlignment="Top">
+            <UniformGrid Columns="5" MaxHeight="100">
+                <Button Cursor="Hand" Padding="5" Background="#BAD7E9" BorderBrush="#2B3467" BorderThickness="1" Click="ReturnHome">
+                    <Image Source="/Images/ceruzaImage.png"/>
+                </Button>
                 <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                 <Button Content="Osztályzatok" Tag="grFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                 <Button Content="Mulasztások" Tag="miFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
@@ -42,7 +55,7 @@
                             <Setter Property="BorderThickness" Value="0.5" />
                         </Style>
                         <Style x:Key="headerLabel" TargetType="Label" BasedOn="{StaticResource baseLabel}">
-                            <Setter Property="Background" Value="AliceBlue"/>
+                            <Setter Property="Background" Value="#BAD7E9"/>
                             <Setter Property="FontWeight" Value="Bold" />
                             <Setter Property="FontSize" Value="20"/>
                         </Style>
@@ -71,8 +84,13 @@
         </ContentControl>
 
         <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
-            <Border Margin="10" BorderBrush="Black" BorderThickness="0.5">
+            <Border Margin="10" BorderBrush="Black" BorderThickness="0.5" Background="#BAD7E9">
                 <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="Foreground" Value="#2B3467"/>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
                         <RowDefinition />
@@ -113,7 +131,7 @@
 
         <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Collapsed">
             <Grid>
-                <StackPanel Margin="20 0" IsVisibleChanged="loadAbsences">
+                <StackPanel Margin="20 0" IsVisibleChanged="loadAbsences" MaxWidth="1000">
                     <StackPanel.Resources>
                         <Style TargetType="Border">
                             <Setter Property="BorderBrush" Value="Gray"/>
@@ -144,10 +162,10 @@
         <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Collapsed">
             <Grid Margin="10 20">
                 <ScrollViewer>
-                    <StackPanel IsVisibleChanged="loadHomework">
+                    <StackPanel IsVisibleChanged="loadHomework" MaxWidth="1000">
                         <StackPanel.Resources>
                             <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderBrush" Value="#2B3467"/>
                                 <Setter Property="BorderThickness" Value="1" />
                                 <Setter Property="CornerRadius" Value="10" />
                                 <Setter Property="Margin" Value="0 10" />
@@ -156,7 +174,7 @@
                                 <Setter Property="Padding" Value="20 10"/>
                                 <Style.Triggers>
                                     <Trigger Property="Tag" Value="whiteLabel">
-                                        <Setter Property="Foreground" Value="WhiteSmoke"/>
+                                        <Setter Property="Foreground" Value="White"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

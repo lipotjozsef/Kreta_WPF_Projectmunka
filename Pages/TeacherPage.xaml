@@ -10,9 +10,20 @@
 
     <Page.Resources>
         <Style x:Key="h1Label" TargetType="Control">
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Background" Value="#BAD7E9" />
+            <Setter Property="Foreground" Value="#2B3467"/>
+            <Setter Property="BorderBrush" Value="#2B3467"/>
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+        <Style x:Key="submitButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderBrush" Value="Green" />
+            <Setter Property="Background" Value="#14baa0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="10, 5" />
+        </Style> 
     </Page.Resources>
 
     <Grid>
@@ -21,57 +32,18 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Row="0">
-            <UniformGrid Columns="5">
-                <Image></Image>
-                <Button Content="Órarend" Tag="ttFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
-                <Button Content="Osztályzat hozzáadása" Tag="grFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
+        <ContentControl Grid.Row="0" VerticalAlignment="Top">
+            <UniformGrid Columns="4" MaxHeight="100">
+                <Button Cursor="Hand" Padding="5" Background="#BAD7E9" BorderBrush="#2B3467" BorderThickness="1" Click="ReturnHome">
+                    <Image Source="/Images/ceruzaImage.png"/>
+                </Button>
+                <Button Content="Új Osztályzatok" Tag="grFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                 <Button Content="Mulasztás rögzítése" Tag="miFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
                 <Button Content="Feladatok felvétele" Tag="hwFrame" Click="menuButtonClick" Style="{StaticResource h1Label}"/>
             </UniformGrid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="ttFrame" Tag="contentFrame" Visibility="Collapsed">
-            <Border BorderBrush="Black" BorderThickness="0.5" Margin="10">
-                <Grid Tag="10_6" Name="ttTable"  Initialized="generateRowsColumnsByTag">
-                    <Grid.Resources>
-                        <Style x:Key="baseLabel" TargetType="Label">
-                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="FontSize" Value="13"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
-                            <Setter Property="BorderThickness" Value="0.5" />
-                        </Style>
-                        <Style x:Key="headerLabel" TargetType="Label" BasedOn="{StaticResource baseLabel}">
-                            <Setter Property="Background" Value="AliceBlue"/>
-                            <Setter Property="FontWeight" Value="Bold" />
-                            <Setter Property="FontSize" Value="20"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label Content="" Grid.Column="0" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                    <Label Content="Hetfő" Grid.Column="1" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                    <Label Content="Kedd" Grid.Column="2" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                    <Label Content="Szerda" Grid.Column="3" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                    <Label Content="Csütörtök" Grid.Column="4" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-                    <Label Content="Péntek" Grid.Column="5" Grid.Row="0" Style="{StaticResource headerLabel}"/>
-
-                    <Label Content="0. óra" Grid.Column="0" Grid.Row="1" Style="{StaticResource headerLabel}"/>
-                    <Label Content="1. óra" Grid.Column="0" Grid.Row="2" Style="{StaticResource headerLabel}"/>
-                    <Label Content="2. óra" Grid.Column="0" Grid.Row="3" Style="{StaticResource headerLabel}"/>
-                    <Label Content="3. óra" Grid.Column="0" Grid.Row="4" Style="{StaticResource headerLabel}"/>
-                    <Label Content="4. óra" Grid.Column="0" Grid.Row="5" Style="{StaticResource headerLabel}"/>
-                    <Label Content="5. óra" Grid.Column="0" Grid.Row="6" Style="{StaticResource headerLabel}"/>
-                    <Label Content="6. óra" Grid.Column="0" Grid.Row="7" Style="{StaticResource headerLabel}"/>
-                    <Label Content="7. óra" Grid.Column="0" Grid.Row="8" Style="{StaticResource headerLabel}"/>
-                    <Label Content="8. óra" Grid.Column="0" Grid.Row="9" Style="{StaticResource headerLabel}"/>
-                    <UniformGrid Name="ttClassesGrid" Rows="9" Columns="5" Grid.Column="1" Grid.ColumnSpan="8" Grid.Row="1" Grid.RowSpan="9">
-
-                    </UniformGrid>
-                </Grid>
-            </Border>
-        </ContentControl>
-
-        <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
+        <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Visible">
             <ContentControl.Resources>
                 <Style x:Key="gradeButton" TargetType="RadioButton">
                     <Setter Property="Margin" Value="5, 0"/>
@@ -89,10 +61,18 @@
                 <Label Content="Új érdemjegy rögzítése" Grid.Row="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5"/>
                 <ComboBox Name="grClassCB" Width="400" Grid.Row="1" IsVisibleChanged="loadClasses" SelectionChanged="loadStudentsGrade"  />
                 <StackPanel Grid.Row="2" Width="400">
-                    <Label Content="Dolgozat leírás" />
+                    <Label Content="Dolgozat leírás"/>
                     <TextBox Height="50" TextWrapping="Wrap"/>
                 </StackPanel>
-                <Border Margin="10, 5" BorderBrush="Black" BorderThickness="0.5" Grid.Row="3">
+                <Border Margin="10, 5" BorderBrush="Black" BorderThickness="0.5" Grid.Row="3" Background="#BAD7E9">
+                    <Border.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Foreground" Value="#2B3467"/>
+                        </Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Foreground" Value="#2B3467"/>
+                        </Style>
+                    </Border.Resources>
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <StackPanel Name="gradeGrid" Orientation="Vertical" Margin="10, 5">
@@ -114,7 +94,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
-                <Button Grid.Row="4" Width="80" Margin="10, 5" HorizontalAlignment="Right" Click="newGrading">Rögzítés</Button>
+                <Button Grid.Row="4" Width="80" Margin="20, 0" HorizontalAlignment="Right" Click="newGrading" Style="{StaticResource submitButton}">Rögzítés</Button>
             </Grid>
         </ContentControl>
 
@@ -152,7 +132,7 @@
                             <Button Height="10" FontSize="5" Tag="-5" Click="changeMinutesLate">▼</Button>
                         </StackPanel>
                     </StackPanel>
-                    <Button Margin="0 20" Width="80" HorizontalAlignment="Right" Click="tryNewAbsence">Rögzítés</Button>
+                    <Button Margin="0 20" Width="80" HorizontalAlignment="Right" Click="tryNewAbsence" Style="{StaticResource submitButton}">Rögzítés</Button>
                     <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Name="lMessage" Grid.Row="4" Grid.Column="1" />
                 </StackPanel>
             </Grid>
@@ -177,8 +157,8 @@
                     <Label Content="Osztály" />
                     <ComboBox Name="hwClassCB" IsVisibleChanged="loadClasses" />
                     <Label Content="Feladat leírás" />
-                    <TextBox TextWrapping="Wrap" Height="100"/>
-                    <Button HorizontalAlignment="Right" Padding="20, 0" Margin="10, 20" Click="tryNewHomework">Rözgzítés</Button>
+                    <TextBox TextWrapping="Wrap" Height="100" Foreground="#2B3467" Background="#BAD7E9"/>
+                    <Button HorizontalAlignment="Right" Padding="10, 5" Margin="5, 20" Click="tryNewHomework" Style="{StaticResource submitButton}">Rözgzítés</Button>
                 </StackPanel>
             </Grid>
         </ContentControl>
