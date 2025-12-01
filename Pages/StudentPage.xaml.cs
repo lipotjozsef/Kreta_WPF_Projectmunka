@@ -25,6 +25,12 @@ namespace Kreta_WPF.Pages
         string[] possibleSubjects = [];
         Random myRandom = new Random();
 
+        Brush darkBlue = new SolidColorBrush(Color.FromRgb(43, 52, 103));
+        Brush lightBlue = new SolidColorBrush(Color.FromRgb(186, 215, 233));
+
+        Brush stripeLightBlue = new SolidColorBrush(Color.FromRgb(200, 231, 250));
+        Brush stripeDarkBlue = new SolidColorBrush(Color.FromRgb(165, 192, 209));
+
         private readonly Student loggedinUser;
 
         public StudentPage(Student loggedinUser)
@@ -51,6 +57,13 @@ namespace Kreta_WPF.Pages
             }
         }
 
+        private void ReturnHome(object sender, RoutedEventArgs e)
+        {
+            MainWindow? myWindow = Application.Current.MainWindow as MainWindow;
+            if (myWindow is null) return;
+            myWindow.logout();
+        }
+
         private void loadTimeTable(object sender, DependencyPropertyChangedEventArgs e)
         {
             UniformGrid? timeTable = sender as UniformGrid;
@@ -58,24 +71,25 @@ namespace Kreta_WPF.Pages
 
             if (Equals(e.NewValue, true))
             {
+                bool isStriped = false;
                 for (int i = 0; i != 5; i++)
                 {
                     int randomClassCount = myRandom.Next(possibleSubjects.Length, 7);
                     for (int j = 0; j != randomClassCount; j++)
                     {
                         string currentContent = "";
-                        if (15 < myRandom.Next(0, 100)) currentContent = possibleSubjects[myRandom.Next(possibleSubjects.Length)];
-                        else j--;
-                            Label newClassLabel = new Label
-                            {
-                                HorizontalContentAlignment = HorizontalAlignment.Center,
-                                VerticalContentAlignment = VerticalAlignment.Center,
-                                Style = (Style)ttTable.Resources["baseLabel"],
-                                Background = j % 2 == 0 ? Brushes.WhiteSmoke : Brushes.White,
-                                Content = currentContent
-                            };
+                        if (5 < myRandom.Next(0, 100)) currentContent = possibleSubjects[myRandom.Next(possibleSubjects.Length)];
+                        Label newClassLabel = new Label
+                        {
+                            HorizontalContentAlignment = HorizontalAlignment.Center,
+                            VerticalContentAlignment = VerticalAlignment.Center,
+                            Style = (Style)ttTable.Resources["baseLabel"],
+                            Background = isStriped ? stripeLightBlue : stripeDarkBlue,
+                            Content = currentContent
+                        };
                         timeTable.Children.Add(newClassLabel);
                     }
+                    isStriped = !isStriped;
                 }
             }
             else timeTable.Children.Clear();
@@ -128,7 +142,7 @@ namespace Kreta_WPF.Pages
             {
                 Columns = 16,
                 Rows = 1,
-                Background = index % 2 == 0 ? Brushes.WhiteSmoke : Brushes.White,
+                Background = index % 2 == 0 ? stripeLightBlue : stripeDarkBlue,
             };
             Label indexLabel = new Label
             {
@@ -168,6 +182,7 @@ namespace Kreta_WPF.Pages
 
         private Border generateNewCard(string[] contents, bool isFlipped = false)
         {
+
             Border parentBorder = new Border();
             UniformGrid parentGrid = new UniformGrid()
             {
@@ -177,7 +192,7 @@ namespace Kreta_WPF.Pages
             parentBorder.Child = parentGrid;
             StackPanel stackParent = new StackPanel
             {
-                Background = isFlipped ? Brushes.Gray : Brushes.White
+                Background = isFlipped ? darkBlue : lightBlue
             };
             parentGrid.Children.Add(stackParent);
             Label title = new Label()
@@ -185,14 +200,14 @@ namespace Kreta_WPF.Pages
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 Content = contents[0],
-                Foreground = isFlipped ? Brushes.WhiteSmoke : Brushes.Black
+                Foreground = isFlipped ? Brushes.White : darkBlue
             };
             Label title2 = new Label()
             {
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 Content = contents[1],
-                Foreground = isFlipped ? Brushes.WhiteSmoke : Brushes.Black
+                Foreground = isFlipped ? Brushes.White : darkBlue
             };
             stackParent.Children.Add(title);
             stackParent.Children.Add(title2);
@@ -202,8 +217,8 @@ namespace Kreta_WPF.Pages
                 Content = contents[2],
                 HorizontalContentAlignment = HorizontalAlignment.Right,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Background = isFlipped ? Brushes.White : Brushes.Gray,
-                Foreground = isFlipped ? Brushes.Black : Brushes.WhiteSmoke
+                Background = isFlipped ? lightBlue : darkBlue,
+                Foreground = isFlipped ? darkBlue : Brushes.White
 
             };
             parentGrid.Children.Add(desc);

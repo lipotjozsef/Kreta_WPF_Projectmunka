@@ -41,6 +41,13 @@ namespace Kreta_WPF.Pages
             }
         }
 
+        private void ReturnHome(object sender, RoutedEventArgs e)
+        {
+            MainWindow? myWindow = Application.Current.MainWindow as MainWindow;
+            if (myWindow is null) return;
+            myWindow.logout();
+        }
+
         private Student[] selectedStudents(string? selectedDes)
         {
             if (selectedDes is null) return [];
