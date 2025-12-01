@@ -7,26 +7,38 @@
         mc:Ignorable="d"
         Title="Ceruza" Height="500" Width="800"
         FontSize="15px"
-        FontFamily="Arial">
+        FontFamily="Arial"
+        Background="#FCFFE7">
+    <Window.LayoutTransform>
+        <ScaleTransform ScaleX="1" ScaleY="1"/>
+    </Window.LayoutTransform>
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#2B3467" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        <ContentControl Name="loginPage" MaxWidth="1000px" Visibility="Visible">
+        <ContentControl Name="loginPage" MaxWidth="1500px" Visibility="Visible">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="1.5*" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Image></Image>
-                <StackPanel VerticalAlignment="Center" Width="auto" Height="auto" Grid.Column="1" KeyDown="loginPanelKeydown">
-                    <Label Content="Azonosító" />
-                    <TextBox Name="loginUserID" LostFocus="revertBorder"/>
-                    <Label Content="Jelszó" Margin="0, 5, 0, 0"/>
-                    <PasswordBox Name="loginPassword" LostFocus="revertBorder"/>
-                    <StackPanel HorizontalAlignment="Right" Width="auto">
-                        <Button Content="Bejelentkezés" Width="100px" Margin="0, 10" Click="submitLogin"/>
+                
+                <Border Grid.Column="1" KeyDown="loginPanelKeydown" Background="#BAD7E9" MaxHeight="450" CornerRadius="20" Padding="30" >
+                    <StackPanel VerticalAlignment="Center" Width="auto" Height="auto">
+                        <Image Source="/Images/ceruzaImage.png" MaxWidth="300" MinWidth="250"/>
+                        <Label Content="Azonosító" Foreground="#2B3467"/>
+                        <TextBox Name="loginUserID" LostFocus="revertBorder" IsVisibleChanged="emptyLabel"/>
+                        <Label Content="Jelszó" Margin="0, 5, 0, 0"/>
+                        <PasswordBox Name="loginPassword" LostFocus="revertBorder" IsVisibleChanged="emptyLabel"/>
+                        <StackPanel HorizontalAlignment="Right" Width="auto">
+                            <Button Content="Bejelentkezés" Width="125px" Margin="0, 10" Click="submitLogin" Cursor="Hand" BorderBrush="#04baa0" Background="#14baa0" Foreground="#FFFFFF" Padding="10, 5"/>
+                        </StackPanel>
+                        <TextBlock Name="errorBlock" Text="Teszt Error!" TextAlignment="Center"  Margin="0, 10" TextWrapping="Wrap" MaxWidth="300" Foreground="#EB455F" IsVisibleChanged="emptyLabel"/>
                     </StackPanel>
-                    <TextBlock Name="errorBlock" Text="Teszt Error!" TextAlignment="Center"  Margin="0, 10" TextWrapping="Wrap" MaxWidth="300" Foreground="Red" Loaded="emptyLabel"/>
-                </StackPanel>
+                </Border>
             </Grid>
         </ContentControl>
         
