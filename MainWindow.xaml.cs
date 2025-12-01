@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using System.Windows.Threading;
 
 namespace Kreta_WPF
@@ -29,9 +30,14 @@ namespace Kreta_WPF
             {
                 myClass.LoadSubjects(students);
             }
-            /*Debug.WriteLine("\tPrinting Frames");
-            foreach (var f in Frames) Debug.WriteLine($"\t\t{f.Name}");*/
-        }
+
+            MainFrame.Navigated += (s, e) =>
+            {
+                MainFrame.NavigationService.RemoveBackEntry();
+            };
+                /*Debug.WriteLine("\tPrinting Frames");
+                foreach (var f in Frames) Debug.WriteLine($"\t\t{f.Name}");*/
+            }
 
         static public IEnumerable<FrameworkElement> getElementsByTag(DependencyObject parent, object tag)
         {
@@ -78,7 +84,9 @@ namespace Kreta_WPF
             Action<string, Control?> writeError = (string errorText, Control? elementToChange) =>
             {
                 errorBlock.Text = errorText;
-                if (elementToChange != null) elementToChange.BorderBrush = Brushes.Red;
+                if (elementToChange != null) elementToChange.BorderBrush = new SolidColorBrush(
+                    Color.FromRgb(235, 69, 95)
+                    );
                 throw new ArgumentNullException(errorText);
             };
 
@@ -88,7 +96,7 @@ namespace Kreta_WPF
                 int.TryParse(loginUserID.Text.Trim(), out userid);
                 string password = loginPassword.Password.Trim();
 
-                if (userid == -1) writeError("A felhasználó név megadása kötelező a bejelentkezéshez!", loginUserID);
+                if (userid == -1 || userid == 0) writeError("Az azonosító megadása kötelező a bejelentkezéshez!", loginUserID);
                 if (string.IsNullOrEmpty(password)) writeError("A jelszó megadása kötelező a bejelentkezéshez!", loginPassword);
 
                 User? loggedinUser = tryLogin(userid, password);
@@ -120,10 +128,19 @@ namespace Kreta_WPF
             return null;
         }
 
-        private void emptyLabel(object sender, RoutedEventArgs e)
+        public void logout()
         {
-            TextBlock? myObject = sender as TextBlock;
-            if(myObject is TextBlock) myObject.Text = "";
+            MainFrame.Content = null;
+            loginPage.Visibility = Visibility.Visible;
+            activePage.Visibility = Visibility.Collapsed;
+        }
+
+        private void emptyLabel(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            FrameworkElement? myObject = sender as FrameworkElement;
+            if(myObject is TextBlock) (myObject as TextBlock).Text = "";
+            if(myObject is PasswordBox) (myObject as PasswordBox).Password = "";
+            if (myObject is TextBox) (myObject as TextBox).Text= "";
         }
     }
 }
