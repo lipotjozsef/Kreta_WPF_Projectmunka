@@ -14,13 +14,13 @@ namespace Kreta_WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        static string studentPath = "./JSONData/Students.json";
+        public static string studentPath = "./JSONData/Students.json";
         public static List<Student> students = User.ReadUsers<Student>(studentPath);
 
-        static string teacherPath = "./JSONData/Teachers.json";
+        public static string teacherPath = "./JSONData/Teachers.json";
         public static List<Teacher> teachers = User.ReadUsers<Teacher>(teacherPath);
 
-        static string classesPath = "./JSONData/Classes.json";
+        public static string classesPath = "./JSONData/Classes.json";
         public static List<Class> classes = Class.ReadClasses(classesPath);
 
         public MainWindow()
