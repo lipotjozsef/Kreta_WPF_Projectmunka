@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -115,8 +116,28 @@ namespace Kreta_WPF.Pages
                     senderBox.Items.Add(newItem);
                 }
                 senderBox.SelectedIndex = 0;
+                loadSubjects();
             }
             else senderBox.Items.Clear();
+        }
+
+        private void loadSubjects()
+        {
+            lMessage.Content = string.Empty;
+            absDp.SelectedDate = DateTime.Now;
+            grSubjectCB.Items.Clear();
+
+            string ClassDesignation = grClassCB.Text;
+            var SelectedClass = MainWindow.classes.First(x => x.ClassDesignation == ClassDesignation);
+            foreach (var ClassSubjectsAndTeachers in SelectedClass.SubjectsAndTeachers.Where(x => x.Value == loggedInUser.ID))
+            {
+                ComboBoxItem newItem = new ComboBoxItem
+                {
+                    Content = ClassSubjectsAndTeachers.Key
+                };
+                grSubjectCB.Items.Add(newItem);
+            }
+            grSubjectCB.SelectedIndex = 0;
         }
 
         private void tryNewAbsence(object sender, RoutedEventArgs e)
@@ -251,7 +272,8 @@ namespace Kreta_WPF.Pages
 
         private void newGrading(object sender, RoutedEventArgs e)
         {
-
+            foreach (var grade in grading) 
+                MainWindow.students.First(x => x.ID == grade.Key).Subjects.First(x => x.Name == grSubjectCB.Text).Marks.Add(grade.Value);
         }
 
         private void tryNewHomework(object sender, RoutedEventArgs e)
