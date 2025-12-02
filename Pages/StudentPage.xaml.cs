@@ -98,12 +98,12 @@ namespace Kreta_WPF.Pages
         private void loadGrades(object sender, DependencyPropertyChangedEventArgs e)
         {
             StackPanel? gradePanel = sender as StackPanel;
-            if (gradePanel is null || possibleSubjects is null) return;
+            if (gradePanel is null) return;
 
             if (Equals(e.NewValue, true))
             {
-                for (int i = 0; i != possibleSubjects.Length; i++) {
-                    UniformGrid generatedGradeCard = generateGradeCard(i, possibleSubjects[i]);
+                for (int i = 0; i != loggedinUser.Subjects.Count; i++) {
+                    UniformGrid generatedGradeCard = generateGradeCard(i, loggedinUser.Subjects[i]);
                     gradePanel.Children.Add(generatedGradeCard);
                 }
             }
@@ -136,7 +136,7 @@ namespace Kreta_WPF.Pages
             else homeworkPanel.Children.Clear();
         }
 
-        private UniformGrid generateGradeCard(int index = 0, string content = "", bool flipColors = false)
+        private UniformGrid generateGradeCard(int index = 0, Subject? currSub = null, bool flipColors = false)
         {
             UniformGrid gridParent = new UniformGrid
             {
@@ -150,21 +150,35 @@ namespace Kreta_WPF.Pages
             };
             Label nameLabel = new Label
             {
-                Content = content
+                Content = currSub?.Name
             };
 
             gridParent.Children.Add(indexLabel);
             gridParent.Children.Add(nameLabel);
 
-            for (int j = 0; j != 14; j++)
+            for (int j = 0; j != 13; j++)
             {
-                
+                string gradeContent = "-";
+                if(j < currSub?.Marks.Count) gradeContent = currSub.Marks[j].ToString();
+
                 Label gradeLabel = new Label
                 {
-                    Content = "-"
+                    Content = gradeContent
                 };
                 gridParent.Children.Add(gradeLabel);
             }
+
+            Label avgLabel = new Label
+            {
+                Content = "-"
+            };
+
+            if (currSub?.Marks.Count > 0)
+            {
+                avgLabel.Content = Math.Round((decimal)(currSub?.AverageMark()), 2).ToString();
+            }
+
+            gridParent.Children.Add(avgLabel);
             return gridParent;
         }
 
