@@ -257,6 +257,7 @@ namespace Kreta_WPF.Pages
             for (int j = 0; j != 5; j++)
             {
                 RadioButton newButton = new RadioButton { Content = (j+1).ToString(), Style = (Style)grFrame.Resources["gradeButton"] };
+
                 newButton.Click += (sender, e) =>
                 {
                     if(Equals(newCheck.IsChecked, true))
@@ -265,7 +266,11 @@ namespace Kreta_WPF.Pages
                     }
                 };
                 newPanel.Children.Add(newButton);
-                if (j == 0) newButton.IsChecked = true;
+                if (j == 0)
+                {
+                    appendNewGrade(student, newButton);
+                    newButton.IsChecked = true;
+                }
             }
             return newGrid;
         }
@@ -274,6 +279,7 @@ namespace Kreta_WPF.Pages
         {
             foreach (var grade in grading) 
                 MainWindow.students.First(x => x.ID == grade.Key).Subjects.First(x => x.Name == grSubjectCB.Text).Marks.Add(grade.Value);
+//            User.WriteUsers(MainWindow.studentPath, MainWindow.students);
         }
 
         private void tryNewHomework(object sender, RoutedEventArgs e)
