@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kreta_WPF"
         mc:Ignorable="d"
-        Title="Ceruza" Height="500" Width="800"
+        Title="Ceruza" Height="800" Width="1200"
+        MinHeight="500" MinWidth="800"
         FontSize="15px"
         FontFamily="Arial"
         Background="#FCFFE7">
