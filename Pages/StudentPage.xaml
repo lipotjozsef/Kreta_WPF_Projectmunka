@@ -161,7 +161,7 @@
 
         <ContentControl Grid.Row="1" Name="hwFrame" Tag="contentFrame" Visibility="Collapsed">
             <Grid Margin="10 20">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel IsVisibleChanged="loadHomework" MaxWidth="1000">
                         <StackPanel.Resources>
                             <Style TargetType="Border">
