@@ -4,8 +4,11 @@ namespace Kreta_WPF
 {
     public class Student(int ID, string Name, string Password) : User(ID, Name, Password)
     {
-        [JsonProperty(Order=1)]
+        [JsonProperty(Order = 1)]
         public List<Subject> Subjects { get; set; } = [];
+
+        [JsonProperty(Order = 2)]
+        public Dictionary<DateTime, int> Abscences { get; } = [];
 
         public double AverageMark() => Subjects.Where(x => x.AverageMark() != 0).Average(x => x.AverageMark());
 
@@ -19,6 +22,16 @@ namespace Kreta_WPF
 
             foreach (var subject in Subjects.Where(subject => !strings.Contains(subject)))
                 this.Subjects.Add(new Subject(subject));
+        }
+
+        public void SetOrChangeAbsence(DateTime TimeOfAbsence, int MinutesLate)
+        {
+            Abscences[TimeOfAbsence] = MinutesLate;
+        }
+
+        public bool RemoveAbsence(DateTime TimeOfAbsence)
+        {
+            return Abscences.Remove(TimeOfAbsence);
         }
 
         public override bool Equals(object? obj)
