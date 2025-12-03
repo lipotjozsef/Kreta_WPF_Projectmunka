@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -117,8 +118,12 @@ namespace Kreta_WPF.Pages
 
             if (Equals(e.NewValue, true))
             {
-                Border generatedBorder = generateNewAbsenceCard();
-                absencePanel.Children.Add(generatedBorder);
+                foreach(KeyValuePair<DateTime, int> abscence in loggedinUser.Abscences)
+                {
+                    string monthName = abscence.Key.ToString("MMM", CultureInfo.InvariantCulture);
+                    Border generatedBorder = generateNewAbsenceCard([$"{monthName} {abscence.Key.Day}", abscence.Key.DayOfWeek.ToString(), $"{abscence.Value} perc"]);
+                    absencePanel.Children.Add(generatedBorder);
+                }
             }
             else absencePanel.Children.Clear();
         }
@@ -182,9 +187,9 @@ namespace Kreta_WPF.Pages
             return gridParent;
         }
 
-        private Border generateNewAbsenceCard()
+        private Border generateNewAbsenceCard(string[] contents)
         {
-            Border parentBorder = generateNewCard(["November 6", "Csütörtök", "-"]);
+            Border parentBorder = generateNewCard(contents);
             return parentBorder;
         }
 
