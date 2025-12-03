@@ -26,7 +26,8 @@ namespace Kreta_WPF
         public MainWindow()
         {
             InitializeComponent();
-            foreach(Class myClass in classes)
+            loginUserID.Focus();
+            foreach (Class myClass in classes)
             {
                 myClass.LoadSubjects(students);
             }
