@@ -7,10 +7,7 @@ namespace Kreta_WPF
         [JsonProperty(Order=1)]
         public List<Subject> Subjects { get; set; } = [];
 
-        public double AverageMark()
-        {
-            return Subjects.Average(x => x.AverageMark());
-        }
+        public double AverageMark() => Subjects.Where(x => x.AverageMark() != 0).Average(x => x.AverageMark());
 
         public void AddSubjects(List<string> Subjects)
         {

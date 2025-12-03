@@ -13,6 +13,7 @@ namespace Kreta_WPF
 
         public double AverageMark()
         {
+            if (Marks.Count == 0) return 0;
             return Marks.Average();
         }
 
