@@ -23,7 +23,11 @@
             <Setter Property="Background" Value="#14baa0" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Padding" Value="10, 5" />
-        </Style> 
+        </Style>
+        <Style x:Key="dangerButton" TargetType="Button" BasedOn="{StaticResource submitButton}">
+            <Setter Property="BorderBrush" Value="Red" />
+            <Setter Property="Background" Value="#eb455f" />
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -43,7 +47,7 @@
             </UniformGrid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Collapsed">
+        <ContentControl Grid.Row="1" Name="grFrame" Tag="contentFrame" Visibility="Visible">
             <ContentControl.Resources>
                 <Style x:Key="gradeButton" TargetType="RadioButton">
                     <Setter Property="Margin" Value="5, 0"/>
@@ -105,10 +109,11 @@
                     </ScrollViewer>
                 </Border>
                 <Button Grid.Row="4" Width="80" Margin="20, 0" HorizontalAlignment="Right" Click="newGrading" Style="{StaticResource submitButton}">Rögzítés</Button>
+                <Label Grid.Row="4" Name="gMessage" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" />
             </Grid>
         </ContentControl>
 
-        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Visible">
+        <ContentControl Grid.Row="1" Name="miFrame" Tag="contentFrame" Visibility="Collapsed">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -125,12 +130,12 @@
 
                 
                 <Label Name="absenceTitle" Content="Mulasztások kezelése" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" FontWeight="Bold"/>
-                <UniformGrid Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Name="AbsenceMenu" IsVisibleChanged="menuVisible" Visibility="Collapsed">
+                <UniformGrid Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Name="AbsenceMenu" IsVisibleChanged="menuVisible">
                     <Button Content="Létezők Kezelése" Margin="5, 0" Style="{StaticResource h1Label}" Click="showAbsenceList"/>
                     <Button Content="Új Felvétele" Margin="5, 0" Style="{StaticResource h1Label}" Click="createNewAbsence"/>
                 </UniformGrid>
 
-                <StackPanel Name="absenceBrowser" Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" Visibility="Visible">
+                <StackPanel Name="absenceBrowser" Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" Visibility="Collapsed">
                     <Button Content="◀ Vissza" Width="60" HorizontalAlignment="Left" FontSize="12" Style="{StaticResource h1Label}" Click="stepBack"/>
                     <Label Content="Osztály" />
                     <ComboBox Name="cbClassBrowser" SelectionChanged="loadStudents" IsVisibleChanged="loadClasses">
@@ -141,7 +146,7 @@
 
                     </ComboBox>
                     <Label Content="Mulasztások Listája"/>
-                    <Border BorderBrush="Black" BorderThickness="1">
+                    <Border BorderBrush="#2B3467" BorderThickness="1">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel Name="absenceSelector">
                                 <StackPanel.Resources>
@@ -156,9 +161,12 @@
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
-                    <Button Margin="0 20" Width="80" HorizontalAlignment="Right" Click="selectAbsence" Style="{StaticResource submitButton}">Kiválasztás</Button>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Margin="10 20" Width="80" Click="deleteAbsence" Style="{StaticResource dangerButton}">Törlés</Button>
+                        <Button Margin="10 20" Width="80" Click="selectAbsence" Style="{StaticResource submitButton}">Szerkesztés</Button>
+                    </StackPanel>
                 </StackPanel>
-                
+
                 <StackPanel Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" Name="absencePanel" Visibility="Collapsed">
                     <Button Content="◀ Vissza" Width="60" HorizontalAlignment="Left" FontSize="12" Style="{StaticResource h1Label}" Click="stepBack"/>
                     <Label Content="Osztály" />
@@ -180,8 +188,8 @@
                         </StackPanel>
                     </StackPanel>
                     <Button Margin="0 20" Width="80" HorizontalAlignment="Right" Click="tryNewAbsence" Style="{StaticResource submitButton}">Rögzítés</Button>
-                    <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Name="lMessage" Grid.Row="4" Grid.Column="1" />
                 </StackPanel>
+                <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Name="lMessage" Grid.Row="4" Grid.Column="1" FontSize="20" FontWeight="Bold" />
             </Grid>
         </ContentControl>
 

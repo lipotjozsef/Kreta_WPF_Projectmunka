@@ -18,9 +18,27 @@ namespace Kreta_WPF.Pages
         public IEnumerable<FrameworkElement>? Frames = null;
         string[] classDesignations = [];
         Dictionary<int, int> grading = new();
-        DateTime? selectedAbsenceDate = null;
-        int? selectedAbsenceMinutes = null;
-        bool loadingAbsence = false;
+
+        KeyValuePair<DateTime, int> selectedAbsence;
+        bool _editAbsence = false;
+        bool editAbsence {
+            get { return _editAbsence; }
+            set {
+                if(value)
+                {
+                    cbClasses.IsEnabled = false;
+                    cbStudents.IsEnabled = false;
+                    absDp.IsEnabled = false;
+                } else
+                {
+                    cbClasses.IsEnabled = true;
+                    cbStudents.IsEnabled = true;
+                    absDp.IsEnabled = true;
+                }
+                _editAbsence = value;
+            }
+        }
+
         public TeacherPage(Teacher loggedInUser)
         {
             this.loggedInUser = loggedInUser;
@@ -69,12 +87,11 @@ namespace Kreta_WPF.Pages
 
         private void loadAbsences(object sender, RoutedEventArgs e)
         {
-            selectedAbsenceDate = null;
-            selectedAbsenceMinutes = null;
             absenceSelector.Children.Clear();
             if (cbStudentBrowser.Items.Count == 0) return;
             int studentID = -1;
             int.TryParse((cbStudentBrowser.SelectedItem as ComboBoxItem)?.Tag.ToString(), out studentID);
+            if (studentID == 0) return;
             Student selectedStudent = MainWindow.students.First(x => x.ID == studentID);
 
             if (selectedStudent.Abscences.Count == 0)
@@ -92,12 +109,11 @@ namespace Kreta_WPF.Pages
             {
                 RadioButton newAbsence = new RadioButton
                 {
-                    Content = $"{absences.Key.Year}. {absences.Key.Month}. {absences.Key.Day} - {absences.Value} perc késés",
+                    Content = $"{absences.Key.Year}. {absences.Key.Month}. {absences.Key.Day} - {absences.Value} perc késés"
                 };
                 newAbsence.Click += (sender, e) =>
                 {
-                    selectedAbsenceDate = absences.Key;
-                    selectedAbsenceMinutes = absences.Value;
+                    selectedAbsence = absences;
                 };
                 absenceSelector.Children.Add(newAbsence);
             }
@@ -105,8 +121,6 @@ namespace Kreta_WPF.Pages
 
         private void selectAbsence(object sender, RoutedEventArgs e)
         {
-            cbStudents.Items.Clear();
-            cbClasses.Items.Clear();
 
             ComboBoxItem selectedClass = (ComboBoxItem)cbClassBrowser.SelectedItem;
             cbClassBrowser.Items.Remove(selectedClass);
@@ -116,31 +130,21 @@ namespace Kreta_WPF.Pages
             cbStudentBrowser.Items.Remove(selectedStudent);
             cbStudents.Items.Add(selectedStudent);
 
-            absDp.SelectedDate = selectedAbsenceDate;
-            minutesLate.Text = selectedAbsenceMinutes.ToString();
+            absDp.SelectedDate = selectedAbsence.Key;
+            minutesLate.Text = selectedAbsence.Value.ToString();
 
-            stepBack(sender, e);
+            editAbsence = true;
+
+            absenceBrowser.Visibility = Visibility.Collapsed;
             changeVisiblity(absencePanel, AbsenceMenu);
         }
 
         private void loadStudents(object sender, RoutedEventArgs e)
         {
-            if (loadingAbsence)
-            {
-                cbStudents.IsReadOnly = true;
-                cbClasses.IsReadOnly = true;
-                return;
-            }
-            else
-            {
-                cbStudents.IsReadOnly = false;
-                cbClasses.IsReadOnly = false;
-            }
-
-            cbStudents.Items.Clear();
-            cbStudentBrowser.Items.Clear();
             ComboBox? senderBox = sender as ComboBox;
             if (senderBox is null) return;
+            cbStudents.Items.Clear();
+            cbStudentBrowser.Items.Clear();
 
             ComboBox? selectedBox = null;
             switch ((senderBox.Parent as StackPanel).Name)
@@ -169,30 +173,14 @@ namespace Kreta_WPF.Pages
 
                 selectedBox.Items.Add(newName);
             }
-
-            /*Class? selectedClass = MainWindow.classes.Where(x => x.ClassDesignation == selectedDes).ToArray()[0];
-            if (selectedClass is null) return;
-            foreach(int stuId in selectedClass.Students)
-            {
-                Student? currentStudent = MainWindow.students.Where(stu => stu.ID.Equals(stuId)).ToArray()[0];
-                if (currentStudent is null) continue;
-                ComboBoxItem newName = new ComboBoxItem
-                {
-                    Content = currentStudent.Name,
-                    Tag = currentStudent.ID.ToString()
-                };
-                cbStudents.Items.Add(newName);
-            }*/
             selectedBox.SelectedIndex = 0;
         }
 
         private void loadClasses(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (loadingAbsence) return;
             ComboBox? senderBox = sender as ComboBox;
             if (senderBox is null || classDesignations is null) return;
             lMessage.Content = string.Empty;
-            absDp.SelectedDate = DateTime.Now;
             if (Equals(e.NewValue, true))
             {
                 foreach(string Desclass in classDesignations)
@@ -211,8 +199,9 @@ namespace Kreta_WPF.Pages
 
         private void loadSubjects(ComboBox sender)
         {
-            if (loadingAbsence) return;
+            if (grFrame.Visibility == Visibility.Collapsed) return;
             lMessage.Content = string.Empty;
+            gMessage.Content = string.Empty;
             absDp.SelectedDate = DateTime.Now;
             grSubjectCB.Items.Clear();
 
@@ -231,6 +220,7 @@ namespace Kreta_WPF.Pages
 
         private void menuVisible(object sender, DependencyPropertyChangedEventArgs e)
         {
+            editAbsence = false;
             absenceTitle.Content = "Mulasztások kezelése";
         }
 
@@ -238,7 +228,6 @@ namespace Kreta_WPF.Pages
         {
             AbsenceMenu.Visibility = Visibility.Collapsed;
             absenceBrowser.Visibility = Visibility.Visible;
-            loadingAbsence = true;
         }
 
         private void stepBack(object sender, EventArgs e)
@@ -256,9 +245,9 @@ namespace Kreta_WPF.Pages
 
         private void createNewAbsence(object sender, EventArgs e)
         {
-            loadingAbsence = false;
             changeVisiblity(absencePanel, AbsenceMenu);
             absenceTitle.Content = "Új Mulasztás Rögzítése";
+            absDp.SelectedDate = DateTime.Now;
         }
 
         private void tryNewAbsence(object sender, RoutedEventArgs e)
@@ -279,6 +268,28 @@ namespace Kreta_WPF.Pages
             if(setNewAbs) lMessage.Content = "A mulasztás sikeresen rögzítve!";
             else lMessage.Content = "A mulasztás rögzítése félre ment!";
 
+            MainWindow.DelayAction(1500, new Action(() => { senderButton.IsEnabled = true; }));
+        }
+
+        private void deleteAbsence(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Biztosan kiszeretné törölni?", "Jól gondolja meg!", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No) return;
+            Button senderButton = (Button)sender;
+            int studentID = -1;
+            int.TryParse((cbStudentBrowser.SelectedItem as ComboBoxItem)?.Tag.ToString(), out studentID);
+            if (studentID == 0) return;
+            Student selectedStudent = MainWindow.students.First(x => x.ID == studentID);
+
+            bool removed = selectedStudent.RemoveAbsence(selectedAbsence.Key);
+            senderButton.IsEnabled = false;
+            if (removed) {
+                lMessage.Content = "A mulasztás sikeresen törölve!";
+                loadAbsences(sender, e);
+                Student.WriteUsers(MainWindow.studentPath, MainWindow.students);
+            } else {
+                lMessage.Content = "A mulasztás törlése félre ment!";
+            }
             MainWindow.DelayAction(1500, new Action(() => { senderButton.IsEnabled = true; }));
         }
 
@@ -394,17 +405,17 @@ namespace Kreta_WPF.Pages
                     }
                 };
                 newPanel.Children.Add(newButton);
-                if (j == 0)
-                {
-                    appendNewGrade(student, newButton);
-                    newButton.IsChecked = true;
-                }
             }
             return newGrid;
         }
 
         private void newGrading(object sender, RoutedEventArgs e)
         {
+            Button? senderButton = sender as Button;
+            if (senderButton is null) return;
+            gMessage.Content = "Osztályzatok sikeresen rögzítve!";
+            senderButton.IsEnabled = false;
+            MainWindow.DelayAction(1500, new Action(() => { senderButton.IsEnabled = true; }));
             foreach (var grade in grading) 
                 MainWindow.students.First(x => x.ID == grade.Key).Subjects.First(x => x.Name == grSubjectCB.Text).Marks.Add(grade.Value);
             User.WriteUsers(MainWindow.studentPath, MainWindow.students);
@@ -412,7 +423,10 @@ namespace Kreta_WPF.Pages
 
         private void tryNewHomework(object sender, RoutedEventArgs e)
         {
-
+            Button? senderButton = sender as Button;
+            if (senderButton is null) return;
+            senderButton.IsEnabled = false;
+            MainWindow.DelayAction(1500, new Action(() => { senderButton.IsEnabled = true; }));
         }
     }
 }
